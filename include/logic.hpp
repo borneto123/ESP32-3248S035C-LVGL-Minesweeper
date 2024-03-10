@@ -6,7 +6,6 @@ struct tile{
     int posX;       // X position in grid
     int posY;       // Y position in grid
     int value;      // Number of surrounding bombs from 0-8 (-1 marks that tile is a bomb)
-    int revealed;   // 1 if the tile was clicked, 0 otherwise
     int status;     // 0 - hidden, 1 - shown, 2 - flagged
 };
 

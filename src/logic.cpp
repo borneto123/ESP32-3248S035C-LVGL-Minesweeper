@@ -15,8 +15,7 @@ tile** createGrid(int rows, int columns){
             grid[i][j].posX = i;
             grid[i][j].posY = j;
             grid[i][j].value = -2; 
-            grid[i][j].revealed = -2;
-            grid[i][j].status = -2;
+            grid[i][j].status = 0;
          }
     }
 
@@ -38,6 +37,7 @@ void generateLevel(int mineNumber, logicData* gameData){
     for(int i = 0; i < mineNumber; i++){
         generateBomb(gameData);
     }
+    generateOthers(gameData);
 }
 
 void generateBomb(logicData* gameData){
@@ -50,12 +50,25 @@ void generateBomb(logicData* gameData){
     gameData->grid[x][y].value=-1;
 }
 
+//Offsets
+int neighbor[8][2]={
+    {-1, -1}, {-1, 0}, {-1, +1},
+    { 0, -1},          { 0, +1},
+    {+1, -1}, {+1, 0}, {+1, +1}
+};
 
 void generateOthers(logicData* gameData){
     for(int i = 0; i < gameData->rows; i++){
         for(int j = 0; j < gameData->columns; j++){
             if(gameData->grid[i][j].value!=-1){
-                //Write neighbor logic
+               int tempValue=0;
+               for(int k=0; k<8; k++){
+                    //Check if neighbor is in bounds
+                    if(i+neighbor[k][0]>=0 && i+neighbor[k][0]<gameData->rows && j+neighbor[k][1]>=0 && i+neighbor[k][1]<gameData->columns){
+                        if(gameData->grid[i+neighbor[k][0]][j+neighbor[k][1]].value==-1) tempValue++;
+                    }
+               }
+               gameData->grid[i][j].value = tempValue;
             }
         }
     }

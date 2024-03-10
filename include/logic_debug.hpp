@@ -5,5 +5,5 @@
 //Prints data in game grid
 void printGridValue(logicData gameData);
 
-
+void printGridStatus(logicData gameData);
 #endif
