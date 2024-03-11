@@ -11,8 +11,7 @@ void setup()
   lvgl_master_init();
   gameDataTest = createLogicData(10,10);
 
-  generateLevel(10,&gameDataTest);
-  printGridValue(gameDataTest);
+  
 
 }
 
@@ -20,6 +19,14 @@ void setup()
 void loop()
 {
      
+if(millis() >2000 && millis()<2020){
+  generateLevel(10,&gameDataTest);
+  printGridValue(gameDataTest);
+  Serial.println();
+  clickTile(9,0,&gameDataTest);
+  clickTile(9,5,&gameDataTest);
+  printGridStatus(gameDataTest);
+}
 
   //lvgl timer logic 
   lv_timer_handler(); 

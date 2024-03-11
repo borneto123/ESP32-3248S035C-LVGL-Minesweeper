@@ -13,7 +13,7 @@ struct logicData{
     tile** grid;    // 2d array of tiles
     int rows;       // number of rows
     int columns;    // bznber of columns
-    int state;      // 0 not generate, 1 generated, 2 game is ongoing, 3 game endend
+    int state;      // 0 not generate, 1 generated, 2 game is ongoing, 3 game lost, 4 game won
 };
 
 
@@ -35,13 +35,16 @@ void generateOthers(logicData* gameData);
 void clickTile(int x, int y, logicData* gameData);
 
 //Flood fill for tiles with value 0
-void clickNonBombTile(int x, int y, logicData* gameData);
+void clickZeroTile(int x, int y, logicData* gameData);
+
+//Function to fill non zero tiles without bombs
+void clickNonZeroTile(int x, int y, logicData* gameData);
 
 //Handle clicking of a bomb tile
 void clickBombTile(int x, int y, logicData* gameData);
 
 //Handle flaging a tile
-void flagclickBombTile(int x, int y, logicData* gameData);
+void clickFlagBombTile(int x, int y, logicData* gameData);
 
 //Maybe usefull
 void refreshShown();
