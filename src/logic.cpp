@@ -104,6 +104,10 @@ void clickNonZeroTile(int x, int y, logicData* gameData){
 
 }
 
+void clickFlagBombTile(int x, int y, logicData* gameData){
+    gameData->grid[x][y].status = 2;
+}
+
   void clickZeroTile(int x, int y, logicData* gameData){
     
     queue<tile*> flood;
@@ -126,5 +130,5 @@ void clickNonZeroTile(int x, int y, logicData* gameData){
             }
         }
     }
-    
+
 }  

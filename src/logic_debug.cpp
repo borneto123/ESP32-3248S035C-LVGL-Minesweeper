@@ -19,3 +19,16 @@ void printGridStatus(logicData gameData){
     }
    }
 }
+
+void printUserPerspective(logicData gameData){
+
+   for(int i = 0; i < gameData.rows; i++){
+        Serial.println();
+        for(int j = 0; j < gameData.columns; j++){
+
+         if(gameData.grid[i][j].status==2) Serial.printf(" F  ");
+         if(gameData.grid[i][j].status==1) Serial.printf("%3d ",gameData.grid[i][j].status);;
+         if(gameData.grid[i][j].status==0) Serial.printf(" ?  ");
+    }
+   }
+}

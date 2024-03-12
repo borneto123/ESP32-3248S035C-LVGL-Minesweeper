@@ -6,4 +6,6 @@
 void printGridValue(logicData gameData);
 
 void printGridStatus(logicData gameData);
+
+void printUserPerspective(logicData gameData);
 #endif

@@ -25,7 +25,10 @@ if(millis() >2000 && millis()<2020){
   Serial.println();
   clickTile(9,0,&gameDataTest);
   clickTile(9,5,&gameDataTest);
+  clickFlagBombTile(0,0,&gameDataTest);
   printGridStatus(gameDataTest);
+  Serial.println();
+  printUserPerspective(gameDataTest);
 }
 
   //lvgl timer logic 
