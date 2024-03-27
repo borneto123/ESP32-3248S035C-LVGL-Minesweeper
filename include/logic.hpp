@@ -1,3 +1,4 @@
+
 #ifndef _LOGIC_
 #define _LOGIC_
 

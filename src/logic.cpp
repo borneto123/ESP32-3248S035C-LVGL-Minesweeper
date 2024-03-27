@@ -1,7 +1,7 @@
 #include <logic.hpp>
 #include <Arduino.h>
 #include <queue>
-
+#include <debug.hpp>
 using namespace std;
 
 //Creating 2d array of tiles which will be used in logicData struct
@@ -91,6 +91,7 @@ void clickTile(int x, int y, logicData* gameData){
     else{
         clickNonZeroTile(x,y,gameData);
     }
+    printGridStatus(*gameData);
 }
 
 void clickBombTile(int x, int y, logicData* gameData){
@@ -117,7 +118,7 @@ void clickFlagBombTile(int x, int y, logicData* gameData){
     while(flood.size() !=0){
         tile* grid =  flood.front();
         flood.pop();
-
+        int count=0;
         grid->status=1;
         for(int k = 0; k < 8; k++){
 
@@ -126,7 +127,20 @@ void clickFlagBombTile(int x, int y, logicData* gameData){
             if(x>=0 && x<gameData->rows && y>=0 && y<gameData->columns){
                 if(gameData->grid[x][y].value == 0 && gameData->grid[x][y].status == 0){
                     flood.push(&gameData->grid[x][y]);
+                    count++;
                 }
+            }
+            if(count == 0){
+                for(int k = 0; k < 8; k++){
+
+            int x = grid->posX+neighbor[k][0];
+            int y = grid->posY+neighbor[k][1];
+            if(x>=0 && x<gameData->rows && y>=0 && y<gameData->columns){
+                if(gameData->grid[x][y].value != 0 && gameData->grid[x][y].status == 0){
+                    gameData->grid[x][y].status=1;
+                   
+                }
+            }}
             }
         }
     }

@@ -1,4 +1,4 @@
-#include <logic_debug.hpp>
+#include <debug.hpp>
 #include <Arduino.h>
 void printGridValue(logicData gameData){
 
@@ -31,4 +31,12 @@ void printUserPerspective(logicData gameData){
          if(gameData.grid[i][j].status==0) Serial.printf(" ?  ");
     }
    }
+}
+
+
+cords convertIdToCordinates(int id,int columns){
+      cords conv;
+      conv.y = id % columns;
+      conv.x= (id-conv.y)/columns;
+      return conv;
 }
