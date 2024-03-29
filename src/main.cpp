@@ -5,8 +5,8 @@
 #include <logic.hpp>
 #include <debug.hpp>
 #include <gui.hpp>
-logicData gameDataTest; 
-gridWidget gridTest;
+logic_data gameDataTest; 
+gui_grid_widget gridTest;
 
 static void btn_event_cb(lv_event_t * e)
 {
@@ -14,9 +14,9 @@ static void btn_event_cb(lv_event_t * e)
     lv_obj_t * btn = lv_event_get_target(e);
     if(code == LV_EVENT_CLICKED) {
       lv_obj_del(btn);
-        gameDataTest = createLogicData(9,9);
-        generateLevel(10,&gameDataTest);
-        createGridWidget(&gridTest,&gameDataTest,lv_scr_act());
+        gameDataTest = logic_create_logic_data(9,9);
+        logic_generate_level(10,&gameDataTest);
+        gui_create_grid_widget(&gridTest,&gameDataTest,lv_scr_act());
     }
 }
 
@@ -50,18 +50,18 @@ void loop()
      
 if(millis() >2000 && millis()<2020){
 //   generateLevel(10,&gameDataTest);
-//   printGridValue(gameDataTest);
+//   debug_print_grid_value(gameDataTest);
 //   Serial.println();
-//   clickTile(9,0,&gameDataTest);
-//   clickTile(9,5,&gameDataTest);
-//   clickFlagBombTile(0,0,&gameDataTest);
-//   printGridStatus(gameDataTest);
+//   logic_click_tile_main(9,0,&gameDataTest);
+//   logic_click_tile_main(9,5,&gameDataTest);
+//   logic_click_flag_tile(0,0,&gameDataTest);
+//   debug_print_grid_display(gameDataTest);
 //   Serial.println();
-//   printUserPerspective(gameDataTest);
+//   debug_print_user_perspective(gameDataTest);
 //  testBody(LV_HOR_RES,400,lv_scr_act());
   //lv_example_btnmatrix_2();
   //testMatrix(10,10,lv_scr_act());
- // gridTest.displayValues[5]="A";
+ // gridTest.display_values[5]="A";
 }
 
   //lvgl timer logic 

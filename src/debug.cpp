@@ -1,42 +1,35 @@
 #include <debug.hpp>
 #include <Arduino.h>
-void printGridValue(logicData gameData){
+void debug_print_grid_value(logic_data game_data){
 
-   for(int i = 0; i < gameData.rows; i++){
+   for(int i = 0; i < game_data.rows; i++){
         Serial.println();
-        for(int j = 0; j < gameData.columns; j++){
-            Serial.printf("%3d ",gameData.grid[i][j].value);
+        for(int j = 0; j < game_data.cols; j++){
+            Serial.printf("%3d ",game_data.grid[i][j].value);
     }
    }
 }
 
-void printGridStatus(logicData gameData){
-
-   for(int i = 0; i < gameData.rows; i++){
+void debug_print_grid_display(logic_data game_data){
+   Serial.println();
+   for(int i = 0; i < game_data.rows; i++){
         Serial.println();
-        for(int j = 0; j < gameData.columns; j++){
-            Serial.printf("%3d ",gameData.grid[i][j].status);
+        for(int j = 0; j < game_data.cols; j++){
+            Serial.printf("%3d ",game_data.grid[i][j].display);
     }
    }
 }
 
-void printUserPerspective(logicData gameData){
+void debug_print_user_perspective(logic_data game_data){
 
-   for(int i = 0; i < gameData.rows; i++){
+   for(int i = 0; i < game_data.rows; i++){
         Serial.println();
-        for(int j = 0; j < gameData.columns; j++){
+        for(int j = 0; j < game_data.cols; j++){
 
-         if(gameData.grid[i][j].status==2) Serial.printf(" F  ");
-         if(gameData.grid[i][j].status==1) Serial.printf("%3d ",gameData.grid[i][j].status);;
-         if(gameData.grid[i][j].status==0) Serial.printf(" ?  ");
+         if(game_data.grid[i][j].display==2) Serial.printf(" F  ");
+         if(game_data.grid[i][j].display==1) Serial.printf("%3d ",game_data.grid[i][j].display);;
+         if(game_data.grid[i][j].display==0) Serial.printf(" ?  ");
     }
    }
 }
 
-
-cords convertIdToCordinates(int id,int columns){
-      cords conv;
-      conv.y = id % columns;
-      conv.x= (id-conv.y)/columns;
-      return conv;
-}

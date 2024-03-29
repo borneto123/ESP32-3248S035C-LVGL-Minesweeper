@@ -4,18 +4,30 @@
 #define _LOGIC_DEBUG_
 
 
-struct cords{
-    int x;
-    int y;
-};
-//Prints data in game grid
-void printGridValue(logicData gameData);
 
-void printGridStatus(logicData gameData);
 
-void printUserPerspective(logicData gameData);
+/**
+ * @brief Function that prints values of every logic_tile in the grid
+ * 
+ * @param game_data logic_data struct
+ */
+void debug_print_grid_value(logic_data game_data);
 
-cords convertIdToCordinates(int id,int columns);
+/**
+ * @brief Function that prints display of every logic_tile in the grid
+ * 
+ * @param game_data logic_data struct
+ */
+void debug_print_grid_display(logic_data game_data);
+
+
+/**
+ * @brief Function that prints perspective of the user
+ * 
+ * @param game_data logic_data struct
+ */
+void debug_print_user_perspective(logic_data game_data);
+
+
 //Provjeri jel radi za sve
-int getColumnsFromDisplayValues(gridWidget* grid);
 #endif
