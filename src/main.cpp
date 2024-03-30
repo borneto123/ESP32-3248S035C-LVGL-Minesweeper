@@ -4,19 +4,21 @@
 #include <lvglMasterSetup.hpp>
 #include <logic.hpp>
 #include <debug.hpp>
-#include <gui.hpp>
+#include <gui_grid_widget.hpp>
+#include <gui_timer_widget.hpp>
 logic_data gameDataTest; 
 gui_grid_widget gridTest;
-
+gui_timer_widget timerTest;
 static void btn_event_cb(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * btn = lv_event_get_target(e);
     if(code == LV_EVENT_CLICKED) {
       lv_obj_del(btn);
-        gameDataTest = logic_create_logic_data(9,9);
-        logic_generate_level(10,&gameDataTest);
+        gameDataTest = logic_create_logic_data(20,20);
+        logic_generate_level(100,&gameDataTest);
         gui_create_grid_widget(&gridTest,&gameDataTest,lv_scr_act());
+        debug_print_grid_value(gameDataTest);
     }
 }
 
@@ -39,11 +41,9 @@ void setup()
 { 
   lvgl_master_init();
   starBtn();
-
+  gui_timer_widget_create(&timerTest, lv_scr_act());
+  gui_timer_widget_start(&timerTest);
 }
-
-
-
 
 void loop()
 {
@@ -66,5 +66,6 @@ if(millis() >2000 && millis()<2020){
 
   //lvgl timer logic 
   lv_timer_handler(); 
+  gui_timer_widget_refresh(&timerTest);
   delay( 10 );
 }

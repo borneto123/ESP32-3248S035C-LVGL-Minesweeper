@@ -1,5 +1,5 @@
-#ifndef _GUI_
-#define _GUI_
+#ifndef _GUI_GRID_WIDGET
+#define _GUI_GRID_WIDGET
 #include <lvgl.h>
 #include <logic.hpp>
 #include <help.hpp>

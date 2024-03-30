@@ -2,7 +2,7 @@
 #include <lvgl.h>
 
 #include <debug.hpp>
-#include <gui.hpp>
+#include <gui_grid_widget.hpp>
 
 void gui_create_grid_widget(gui_grid_widget* grid, struct logic_data* game_data, lv_obj_t* parent) {
     grid->cols = game_data->cols;
@@ -48,6 +48,33 @@ void gui_create_grid_widget_matrix(gui_grid_widget* grid, int rows, int cols, lo
     lv_obj_add_event_cb(grid->matrix, gui_matrix_callback, LV_EVENT_ALL, cbData);
 }
 
+void gui_matrix_callback(lv_event_t* e) {
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t* obj = lv_event_get_target(e);
+    gui_data_matrix_callback* cbData = (gui_data_matrix_callback*)lv_event_get_user_data(e);
+    if (code == LV_EVENT_SHORT_CLICKED) {
+        uint32_t id = lv_btnmatrix_get_selected_btn(obj);
+        if (id <= cbData->game_data->cols * cbData->game_data->rows) {
+            //Serial.printf("\nID:%d", id);
+            int cols = cbData->game_data->cols;
+            cords c = help_convert_id_to_cordinates(id, cols);
+            logic_click_tile_main(c.x, c.y, cbData->game_data);
+            gui_refresh_grid_widget_display_values(cbData);
+            Serial.printf("Short: %d", id);
+        }
+    }
+    if (code == LV_EVENT_LONG_PRESSED) {
+        uint32_t id = lv_btnmatrix_get_selected_btn(obj);
+        if (id <= cbData->game_data->cols * cbData->game_data->rows) {
+           // Serial.printf("LONG: %d", id);
+            int cols = cbData->game_data->cols;
+            cords c = help_convert_id_to_cordinates(id, cols);
+            logic_click_flag_tile(c.x, c.y, cbData->game_data);
+            gui_refresh_grid_widget_display_values(cbData);
+        }
+    }
+}
+
 void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data) {
     int i_data = 0;
     int j_data = 0;
@@ -59,31 +86,18 @@ void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data) {
             i_data++;
             j_data = 0;
             continue;
-        } else if (cb_data->game_data->grid[i_data][j_data].display == 1) {
+        } 
+        else if (cb_data->game_data->grid[i_data][j_data].display == TILE_DISPLAY_SHOWN) {
             sprintf(cb_data->grid->display_values[i], "%d", cb_data->game_data->grid[i_data][j_data].value);
+        }
+
+        else if (cb_data->game_data->grid[i_data][j_data].display == TILE_DISPLAY_FLAGGED) {
+            sprintf(cb_data->grid->display_values[i], "F");
+        }
+
+        else if (cb_data->game_data->grid[i_data][j_data].display == TILE_DISPLAY_HIDDEN) {
+            sprintf(cb_data->grid->display_values[i], "  ");
         }
         j_data++;
     }
-}
-
-void gui_matrix_callback(lv_event_t* e) {
-    lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t* obj = lv_event_get_target(e);
-    gui_data_matrix_callback* cbData = (gui_data_matrix_callback*)lv_event_get_user_data(e);
-    if (code == LV_EVENT_CLICKED) {
-        uint32_t id = lv_btnmatrix_get_selected_btn(obj);
-        if (id <= cbData->game_data->cols * cbData->game_data->rows) {
-            Serial.printf("\nID:%d", id);
-            const char* txt = lv_btnmatrix_get_btn_text(obj, id);
-            int cols = cbData->game_data->cols;
-            cords c = help_convert_id_to_cordinates(id, cols);
-            logic_click_tile_main(c.x, c.y, cbData->game_data);
-            gui_refresh_grid_widget_display_values(cbData);
-        }
-    }
-    // if(code == LV_EVENT_CLICKED) {
-    //     uint32_t id = lv_btnmatrix_get_selected_btn(obj);
-    //     Serial.printf("LONG: %d",id);
-
-    // }
 }

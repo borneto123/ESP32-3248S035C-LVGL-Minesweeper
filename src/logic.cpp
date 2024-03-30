@@ -1,5 +1,4 @@
 
-
 #include <Arduino.h>
 
 #include <debug.hpp>
@@ -78,14 +77,18 @@ void logic_generate_neighbours(logic_data *game_data) {
 }
 
 void logic_click_tile_main(int x, int y, logic_data *game_data) {
-    if (game_data->grid[x][y].value == 0) {
-        logic_click_zero_tile(x, y, game_data);
-    } else if (game_data->grid[x][y].value == TILE_VALUE_BOMB) {
-        logic_click_bomb_tile(x, y, game_data);
-    } else {
-        logic_click_non_zero_tile(x, y, game_data);
+    if (game_data->grid[x][y].display != TILE_DISPLAY_FLAGGED) {
+        if (game_data->grid[x][y].value == 0) {
+            logic_click_zero_tile(x, y, game_data);
+        } 
+        else if (game_data->grid[x][y].value == TILE_VALUE_BOMB) {
+            logic_click_bomb_tile(x, y, game_data);
+        } 
+        else {
+            logic_click_non_zero_tile(x, y, game_data);
+        }
     }
-    debug_print_grid_display(*game_data);
+    //debug_print_grid_display(*game_data);
 }
 
 void logic_click_bomb_tile(int x, int y, logic_data *game_data) {

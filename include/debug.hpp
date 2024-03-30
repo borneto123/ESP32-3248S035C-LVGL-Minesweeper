@@ -1,5 +1,5 @@
 #include <logic.hpp>
-#include <gui.hpp>
+#include <gui_grid_widget.hpp>
 #ifndef _LOGIC_DEBUG_
 #define _LOGIC_DEBUG_
 
