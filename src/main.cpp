@@ -19,6 +19,8 @@ static void btn_event_cb(lv_event_t * e)
         logic_generate_level(100,&gameDataTest);
         gui_create_grid_widget(&gridTest,&gameDataTest,lv_scr_act());
         debug_print_grid_value(gameDataTest);
+          gui_timer_widget_create(&timerTest, lv_scr_act());
+  gui_timer_widget_start(&timerTest);
     }
 }
 
@@ -41,8 +43,7 @@ void setup()
 { 
   lvgl_master_init();
   starBtn();
-  gui_timer_widget_create(&timerTest, lv_scr_act());
-  gui_timer_widget_start(&timerTest);
+
 }
 
 void loop()

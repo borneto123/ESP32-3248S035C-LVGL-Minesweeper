@@ -7,7 +7,7 @@
 void gui_create_grid_widget(gui_grid_widget* grid, struct logic_data* game_data, lv_obj_t* parent) {
     grid->cols = game_data->cols;
     grid->rows = game_data->rows;
-    gui_create_grid_widget_div(grid, parent, LV_HOR_RES, GRID_WIDGET_WIDTH);
+    gui_create_grid_widget_div(grid, parent, LV_HOR_RES, GRID_WIDGET_HEIGHT);
     gui_create_grid_widget_display_values(grid, game_data->rows, game_data->cols);
     gui_create_grid_widget_matrix(grid, game_data->rows, game_data->cols, game_data);
 }

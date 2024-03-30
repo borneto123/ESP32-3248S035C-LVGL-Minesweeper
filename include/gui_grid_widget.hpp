@@ -5,7 +5,7 @@
 #include <help.hpp>
 
 enum gui_grid_widget_constants{
-    GRID_WIDGET_WIDTH = 400,
+    GRID_WIDGET_HEIGHT = 430,
     GRID_TILE_WIDTH = 40,
     GRID_TILE_HEIGHT = 40,
 };
