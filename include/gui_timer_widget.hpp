@@ -76,6 +76,10 @@ void gui_timer_widget_refresh(gui_timer_widget* timer);
 
 static lv_style_t gui_style_timer_widget;
 
+/**
+ * @brief Fucntion that initializes styles for timer widget 
+ * 
+ */
 void gui_timer_widget_style_init();
 
 

@@ -24,21 +24,23 @@ logic_tile **logic_create_grid(int rows, int cols) {
     return grid;
 }
 
-logic_data logic_create_logic_data(int rows, int cols) {
+logic_data logic_create_logic_data(int rows, int cols, int mines_total) {
     logic_data game_data;
 
     game_data.grid = logic_create_grid(rows, cols);
     game_data.rows = rows;
     game_data.cols = cols;
+    game_data.mines_total = mines_total;
+    game_data.mines_remaining = mines_total;
     game_data.state = LOGIC_DATA_STATE_NOT_GENERATED;
-
+    logic_generate_level(&game_data);
     return game_data;
 }
 
-void logic_generate_level(int mine_number, logic_data *game_data) {
+void logic_generate_level(logic_data *game_data) {
     randomSeed(millis());
 
-    for (int i = 0; i < mine_number; i++) {
+    for (int i = 0; i < game_data->mines_total; i++) {
         logic_generate_bomb(game_data);
     }
     logic_generate_neighbours(game_data);
@@ -100,12 +102,25 @@ void logic_click_non_zero_tile(int x, int y, logic_data *game_data) {
     game_data->grid[x][y].display = TILE_DISPLAY_SHOWN;
 }
 
-// FIX DONE WATCH FOR BUGS :)
+//WATCH FOR BUGS :)
 void logic_click_flag_tile(int x, int y, logic_data *game_data) {
-    if (game_data->grid[x][y].display == TILE_DISPLAY_HIDDEN)
+    if (game_data->grid[x][y].display == TILE_DISPLAY_HIDDEN) {
         game_data->grid[x][y].display = TILE_DISPLAY_FLAGGED;
-    else if (game_data->grid[x][y].display == TILE_DISPLAY_FLAGGED)
+        logic_mines_remaining_decrement(game_data);      
+    }
+    else if (game_data->grid[x][y].display == TILE_DISPLAY_FLAGGED) {
         game_data->grid[x][y].display = TILE_DISPLAY_HIDDEN;
+        logic_mines_remaining_increment(game_data);
+    }
+}
+
+void logic_mines_remaining_increment(logic_data *game_data){
+    game_data->mines_remaining++;
+}
+
+
+void logic_mines_remaining_decrement(logic_data *game_data){
+    game_data->mines_remaining--;
 }
 
 void logic_click_zero_tile(int x, int y, logic_data *game_data) {
@@ -143,3 +158,4 @@ void logic_click_zero_tile(int x, int y, logic_data *game_data) {
         }
     }
 }
+

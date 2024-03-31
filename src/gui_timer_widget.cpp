@@ -20,7 +20,7 @@ void gui_timer_widget_start(gui_timer_widget* timer){
     timer->state = GUI_TIMER_WIDGET_STATE_RUNNING;
     timer->last_time = millis();
 }
-//TO-DO
+    
 void gui_timer_widget_create_div(gui_timer_widget* timer, lv_obj_t* parent){
     timer->div = lv_obj_create(parent);
     lv_obj_remove_style_all(timer->div);
@@ -45,7 +45,7 @@ void gui_timer_widget_style_init(){
     lv_style_init(&gui_style_timer_widget);
     lv_style_set_align(&gui_style_timer_widget,LV_ALIGN_TOP_RIGHT);
     lv_style_set_text_color(&gui_style_timer_widget, lv_palette_darken(LV_PALETTE_RED , 3));
-    lv_style_set_bg_opa(&gui_style_timer_widget, 100);
+    lv_style_set_bg_opa(&gui_style_timer_widget, 255);
     lv_style_set_bg_color(&gui_style_timer_widget, lv_color_black());
     lv_style_set_text_font(&gui_style_timer_widget, &lv_font_montserrat_32);
     lv_style_set_width(&gui_style_timer_widget, GUI_TIMER_WIDGET_WIDTH);

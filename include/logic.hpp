@@ -37,6 +37,8 @@ struct logic_tile {
 /**
  * This struct stores all data that is needed to create a game:
  * - `grid` 2d array of tiles
+ * - `mines_total` number of mines that will be generated
+ * - `mines_remaining` number of mines that have not been found
  * - `rows` number of rows in grid
  * - `cols` number of columns in grid
  * - `state` `0` not generated `1` generated `2` game is ongoing `3` game lost,
@@ -44,6 +46,8 @@ struct logic_tile {
  */
 struct logic_data {
     logic_tile **grid;
+    int mines_total;
+    int mines_remaining;
     int rows;
     int cols;
     int state;
@@ -62,17 +66,17 @@ logic_tile **logic_create_grid(int rows, int cols);
  *
  * @param rows number of rows in grid
  * @param cols number of columns in grid
+ * @param mines_total number of mines that will be put on grid
  * @return logic_data
  */
-logic_data logic_create_logic_data(int rows, int cols);
+logic_data logic_create_logic_data(int rows, int cols, int mines_total);
 
 /**
  * @brief Fucntion that generates all values in logic_data grid
  *
- * @param mine_number number of mines that will be put in grid
  * @param game_data  logic_data struct
  */
-void logic_generate_level(int mine_number, logic_data *game_data);
+void logic_generate_level(logic_data *game_data);
 
 /**
  * @brief Funcation that randomly generates a single bomb
@@ -132,6 +136,11 @@ void logic_click_bomb_tile(int x, int y, logic_data *game_data);
  * @param game_data logic_data struct
  */
 void logic_click_flag_tile(int x, int y, logic_data *game_data);
+
+void logic_mines_remaining_increment(logic_data *game_data);
+
+
+void logic_mines_remaining_decrement(logic_data *game_data);
 
 // TO-DO
 void deleteGrid(logic_tile **grid);

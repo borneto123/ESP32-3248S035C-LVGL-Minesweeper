@@ -6,21 +6,27 @@
 #include <debug.hpp>
 #include <gui_grid_widget.hpp>
 #include <gui_timer_widget.hpp>
+#include <gui_mine_counter_widget.hpp>
 logic_data gameDataTest; 
 gui_grid_widget gridTest;
 gui_timer_widget timerTest;
+gui_mine_counter_widget counterTest;
+
+int refresh = 0;
+
 static void btn_event_cb(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * btn = lv_event_get_target(e);
     if(code == LV_EVENT_CLICKED) {
       lv_obj_del(btn);
-        gameDataTest = logic_create_logic_data(20,20);
-        logic_generate_level(100,&gameDataTest);
+        gameDataTest = logic_create_logic_data(10,10,10);
         gui_create_grid_widget(&gridTest,&gameDataTest,lv_scr_act());
         debug_print_grid_value(gameDataTest);
-          gui_timer_widget_create(&timerTest, lv_scr_act());
-  gui_timer_widget_start(&timerTest);
+        gui_timer_widget_create(&timerTest, lv_scr_act());
+        gui_timer_widget_start(&timerTest);
+        gui_mine_counter_widget_create(&counterTest,&gameDataTest,lv_scr_act());
+        refresh = 1;
     }
 }
 
@@ -67,6 +73,9 @@ if(millis() >2000 && millis()<2020){
 
   //lvgl timer logic 
   lv_timer_handler(); 
-  gui_timer_widget_refresh(&timerTest);
+  if(refresh == 1){
+    gui_timer_widget_refresh(&timerTest);
+    gui_mine_counter_widget_refresh(&counterTest, &gameDataTest);
+  }
   delay( 10 );
 }
