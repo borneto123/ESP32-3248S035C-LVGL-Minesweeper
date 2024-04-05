@@ -4,7 +4,7 @@
 #include <debug.hpp>
 #include <gui_grid_widget.hpp>
 
-void gui_create_grid_widget(gui_grid_widget* grid, struct logic_data* game_data, lv_obj_t* parent) {
+void gui_grid_widget_create(gui_grid_widget* grid, struct logic_data* game_data, lv_obj_t* parent) {
     grid->cols = game_data->cols;
     grid->rows = game_data->rows;
     gui_create_grid_widget_div(grid, parent, LV_HOR_RES, GRID_WIDGET_HEIGHT);
@@ -41,6 +41,7 @@ void gui_create_grid_widget_matrix(gui_grid_widget* grid, int rows, int cols, lo
     lv_style_set_pad_all(&style_bg, 0);
     lv_style_set_pad_gap(&style_bg, 0);
     lv_style_set_border_width(&style_bg, 0);
+    //Try to free this memory later
     gui_data_matrix_callback* cbData = new gui_data_matrix_callback;
     cbData->game_data = game_data;
     cbData->grid = grid;

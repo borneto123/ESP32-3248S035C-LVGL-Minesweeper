@@ -61,6 +61,8 @@ struct logic_data {
  */
 logic_tile **logic_create_grid(int rows, int cols);
 
+
+//ADD new parametar
 /**
  * @brief Function that creates a logic_data structure
  *
@@ -69,7 +71,7 @@ logic_tile **logic_create_grid(int rows, int cols);
  * @param mines_total number of mines that will be put on grid
  * @return logic_data
  */
-logic_data logic_create_logic_data(int rows, int cols, int mines_total);
+void logic_create_logic_data(logic_data* game_data, int rows, int cols, int mines_total);
 
 /**
  * @brief Fucntion that generates all values in logic_data grid
@@ -137,10 +139,14 @@ void logic_click_bomb_tile(int x, int y, logic_data *game_data);
  */
 void logic_click_flag_tile(int x, int y, logic_data *game_data);
 
-void logic_mines_remaining_increment(logic_data *game_data);
+void logic_mines_remaining_increment(logic_data *game_data);        
 
 
 void logic_mines_remaining_decrement(logic_data *game_data);
+
+void logic_data_reset(logic_data* game_data);
+
+void logic_data_free_grid(logic_tile** grid);
 
 // TO-DO
 void deleteGrid(logic_tile **grid);

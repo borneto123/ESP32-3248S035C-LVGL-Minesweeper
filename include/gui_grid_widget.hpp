@@ -45,7 +45,7 @@ struct gui_data_matrix_callback{
  * @param game_data logic_data* struct
  * @param parent pointer to parent of grid widget
  */
-void gui_create_grid_widget(gui_grid_widget* grid, logic_data* game_data,lv_obj_t* parent);
+void gui_grid_widget_create(gui_grid_widget* grid, logic_data* game_data,lv_obj_t* parent);
 
 
 /**

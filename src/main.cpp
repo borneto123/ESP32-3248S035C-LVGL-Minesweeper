@@ -4,52 +4,70 @@
 #include <lvglMasterSetup.hpp>
 #include <logic.hpp>
 #include <debug.hpp>
-#include <gui_grid_widget.hpp>
-#include <gui_timer_widget.hpp>
-#include <gui_mine_counter_widget.hpp>
+#include <gui_game_widget.hpp>
+#include <logic_game_difficulty.hpp>
+#include <gui_game_difficulty_button.hpp>
 logic_data gameDataTest; 
 gui_grid_widget gridTest;
 gui_timer_widget timerTest;
 gui_mine_counter_widget counterTest;
 
-int refresh = 0;
+logic_game_difficulty gameEasyTest;
+logic_game_difficulty gameMediumTest;
+logic_game_difficulty gameHardTest;
 
+
+
+gui_game_difficulty_button buttonEasyTest;
+gui_game_difficulty_button buttonMediumTest;
+gui_game_difficulty_button buttonHardTest;
+
+gui_game_widget test;
+int refresh = 0;
+/*
 static void btn_event_cb(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * btn = lv_event_get_target(e);
     if(code == LV_EVENT_CLICKED) {
-      lv_obj_del(btn);
-        gameDataTest = logic_create_logic_data(10,10,10);
-        gui_create_grid_widget(&gridTest,&gameDataTest,lv_scr_act());
+       lv_obj_del(btn);
+        logic_create_logic_data(&gameDataTest,10,10,10);
+        gui_grid_widget_create(&gridTest,&gameDataTest,lv_scr_act());
         debug_print_grid_value(gameDataTest);
         gui_timer_widget_create(&timerTest, lv_scr_act());
         gui_timer_widget_start(&timerTest);
         gui_mine_counter_widget_create(&counterTest,&gameDataTest,lv_scr_act());
-        refresh = 1;
+      lv_obj_del(btn);
+        refresh = 1; 
+        gui_game_widget_create(&test, gameTest, lv_scr_act());
     }
-}
+}*/
 
 /**
  * Create a button with a label and react on click event.
  */
-void starBtn(void)
+/*void starBtn(void)
 {
-    lv_obj_t * btn = lv_btn_create(lv_scr_act());     /*Add a button the current screen*/
-    lv_obj_set_pos(btn, 10, 10);                            /*Set its position*/
-    lv_obj_set_size(btn, 120, 50);                          /*Set its size*/
-    lv_obj_add_event_cb(btn, btn_event_cb, LV_EVENT_ALL, NULL);           /*Assign a callback to the button*/
+     lv_obj_t * btn = lv_btn_create(lv_scr_act());     
+    lv_obj_set_pos(btn, 10, 10);                            
+    lv_obj_set_size(btn, 120, 50);                          
+    lv_obj_add_event_cb(btn, btn_event_cb, LV_EVENT_ALL, NULL);           
 
-    lv_obj_t * label = lv_label_create(btn);          /*Add a label to the button*/
-    lv_label_set_text(label, "Start");                     /*Set the labels text*/
+    lv_obj_t * label = lv_label_create(btn);          
+    lv_label_set_text(label, "Start");                     
     lv_obj_center(label);
 }
-
+ */
 void setup()
 { 
   lvgl_master_init();
-  starBtn();
-
+  logic_game_difficulty_create(&gameEasyTest, 9, 9, 10);
+  logic_game_difficulty_create(&gameMediumTest, 14, 14, 40);
+  logic_game_difficulty_create(&gameHardTest, 20, 20, 99);
+ //starBtn();
+  gui_game_difficulty_button_create(&test,&buttonEasyTest, &gameEasyTest, "Easy", lv_color_black(),lv_color_white(),lv_scr_act());
+  gui_game_difficulty_button_create(&test,&buttonMediumTest, &gameMediumTest, "Medium", lv_color_black(),lv_color_white(),lv_scr_act());
+  gui_game_difficulty_button_create(&test,&buttonHardTest, &gameHardTest, "Hard", lv_color_black(),lv_color_white(),lv_scr_act());
 }
 
 void loop()
@@ -72,10 +90,10 @@ if(millis() >2000 && millis()<2020){
 }
 
   //lvgl timer logic 
-  lv_timer_handler(); 
-  if(refresh == 1){
-    gui_timer_widget_refresh(&timerTest);
-    gui_mine_counter_widget_refresh(&counterTest, &gameDataTest);
+  lv_timer_handler();
+  if(test.started){ 
+    gui_timer_widget_refresh(test.master_timer);
+    gui_mine_counter_widget_refresh(test.master_counter, test.master_grid_data); 
   }
   delay( 10 );
 }

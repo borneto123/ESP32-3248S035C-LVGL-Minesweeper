@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 
 #include <debug.hpp>
@@ -24,17 +23,16 @@ logic_tile **logic_create_grid(int rows, int cols) {
     return grid;
 }
 
-logic_data logic_create_logic_data(int rows, int cols, int mines_total) {
-    logic_data game_data;
+void logic_create_logic_data(logic_data* game_data, int rows, int cols, int mines_total) {
+    
 
-    game_data.grid = logic_create_grid(rows, cols);
-    game_data.rows = rows;
-    game_data.cols = cols;
-    game_data.mines_total = mines_total;
-    game_data.mines_remaining = mines_total;
-    game_data.state = LOGIC_DATA_STATE_NOT_GENERATED;
-    logic_generate_level(&game_data);
-    return game_data;
+    game_data->grid = logic_create_grid(rows, cols);
+    game_data->rows = rows;
+    game_data->cols = cols;
+    game_data->mines_total = mines_total;
+    game_data->mines_remaining = mines_total;
+    game_data->state = LOGIC_DATA_STATE_NOT_GENERATED;
+    logic_generate_level(game_data);
 }
 
 void logic_generate_level(logic_data *game_data) {
@@ -159,3 +157,18 @@ void logic_click_zero_tile(int x, int y, logic_data *game_data) {
     }
 }
 
+void logic_data_reset(logic_data* game_data){
+
+    game_data->state = LOGIC_DATA_STATE_NOT_GENERATED;
+    game_data->mines_remaining = game_data->mines_total;
+    logic_data_free_grid(game_data->grid);
+    game_data->grid = logic_create_grid(game_data->rows,game_data->cols);
+    logic_generate_level(game_data);
+}
+
+
+void logic_data_free_grid(logic_tile** grid){
+
+    delete[] grid;
+
+}
