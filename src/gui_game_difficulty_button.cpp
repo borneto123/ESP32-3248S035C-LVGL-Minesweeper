@@ -30,3 +30,8 @@ void gui_game_difficulty_button_cb(lv_event_t * e){
         gui_game_widget_create(difficulty->master, *difficulty->settings, lv_scr_act());
     }       
 }
+void gui_game_difficulty_button_set_position(gui_game_difficulty_button* difficulty, int x, int y){
+
+    lv_obj_set_pos(difficulty->button, x, y);
+
+}

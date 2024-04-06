@@ -14,9 +14,18 @@ struct gui_game_widget{
     bool started = false;
 };
 
-void gui_game_widget_create(gui_game_widget* master, logic_game_difficulty difficulty, lv_obj_t* parent);
+void gui_game_widget_create(
+    gui_game_widget* master,
+    logic_game_difficulty difficulty,
+    lv_obj_t* parent
+);
 
-void gui_game_widget_create_div(gui_game_widget* master, logic_game_difficulty difficulty, lv_obj_t* parent);
+
+void gui_game_widget_create_div(
+    gui_game_widget* master,
+    logic_game_difficulty difficulty,
+    lv_obj_t* parent
+);
 
 
 #endif

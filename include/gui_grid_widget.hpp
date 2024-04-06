@@ -92,4 +92,20 @@ void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data);
  */
 void gui_matrix_callback (lv_event_t * e);
 
+struct style_colors{
+    lv_color_t BACKGROUND_CLICKED = lv_color_make(230, 230, 230);
+    lv_color_t LABEL_1 = lv_color_make(0, 0, 255);
+    lv_color_t LABEL_2 = lv_color_make(0, 128, 0);
+    lv_color_t LABEL_3 = lv_color_make(255, 0, 0);
+    lv_color_t LABEL_4 = lv_color_make(0, 0, 128);
+    lv_color_t LABEL_5 = lv_color_make(128, 0, 0);
+    lv_color_t LABEL_6 = lv_color_make(0, 128, 128);
+    lv_color_t LABEL_7 = lv_color_make(0, 0, 0);
+    lv_color_t LABEL_8 = lv_color_make(128, 128, 128);
+};
+
+
+
+
+
 #endif

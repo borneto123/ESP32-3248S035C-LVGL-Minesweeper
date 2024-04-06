@@ -1,8 +1,9 @@
 #include <Arduino.h>
 #include <lvgl.h>
-
 #include <debug.hpp>
 #include <gui_grid_widget.hpp>
+
+style_colors colors;
 
 void gui_grid_widget_create(gui_grid_widget* grid, struct logic_data* game_data, lv_obj_t* parent) {
     grid->cols = game_data->cols;
@@ -41,11 +42,15 @@ void gui_create_grid_widget_matrix(gui_grid_widget* grid, int rows, int cols, lo
     lv_style_set_pad_all(&style_bg, 0);
     lv_style_set_pad_gap(&style_bg, 0);
     lv_style_set_border_width(&style_bg, 0);
+    lv_style_set_radius(&style_bg, 0);
     //Try to free this memory later
     gui_data_matrix_callback* cbData = new gui_data_matrix_callback;
     cbData->game_data = game_data;
     cbData->grid = grid;
     lv_obj_add_style(grid->matrix, &style_bg, 0);
+    lv_obj_set_style_radius(grid->matrix, 0 ,LV_PART_ITEMS );
+    lv_obj_set_style_border_width(grid->matrix, 1, LV_PART_ITEMS);
+    lv_obj_set_style_bg_color(grid->matrix, lv_color_make(150, 150, 150), LV_PART_ITEMS);
     lv_obj_add_event_cb(grid->matrix, gui_matrix_callback, LV_EVENT_ALL, cbData);
 }
 
@@ -62,6 +67,7 @@ void gui_matrix_callback(lv_event_t* e) {
             logic_click_tile_main(c.x, c.y, cbData->game_data);
             gui_refresh_grid_widget_display_values(cbData);
             Serial.printf("Short: %d", id);
+            
         }
     }
     if (code == LV_EVENT_LONG_PRESSED) {
@@ -72,6 +78,46 @@ void gui_matrix_callback(lv_event_t* e) {
             cords c = help_convert_id_to_cordinates(id, cols);
             logic_click_flag_tile(c.x, c.y, cbData->game_data);
             gui_refresh_grid_widget_display_values(cbData);
+        }
+    }
+
+    if(code == LV_EVENT_DRAW_PART_BEGIN){
+        lv_obj_draw_part_dsc_t * dsc = lv_event_get_draw_part_dsc(e);
+        if(dsc->class_p == &lv_btnmatrix_class && dsc->type == LV_BTNMATRIX_DRAW_PART_BTN) {
+//dsc->rect_dsc->radius = 0;
+            // make every color at start
+            const char* text = lv_btnmatrix_get_btn_text(obj, dsc->id);
+            if(!(strcmp(text, "  ")==0) && !(strcmp(lv_btnmatrix_get_btn_text(obj, dsc->id), "F")==0)){
+                dsc->rect_dsc->bg_color = colors.BACKGROUND_CLICKED;
+            }
+            if(strcmp(text, "0")==0){
+                dsc->label_dsc->opa = 0;
+            }
+            if(strcmp(text, "1")==0){
+                dsc->label_dsc->color = colors.LABEL_1;
+            }
+            else if(strcmp(text, "2")==0){
+                dsc->label_dsc->color = colors.LABEL_2;
+            }
+            else if(strcmp(text, "3")==0){
+                dsc->label_dsc->color = colors.LABEL_3;
+            }
+            else if(strcmp(text, "4")==0){
+                dsc->label_dsc->color = colors.LABEL_4;
+            }
+            else if(strcmp(text, "5")==0){
+                dsc->label_dsc->color = colors.LABEL_5;
+            }
+            else if(strcmp(text, "6")==0){
+                dsc->label_dsc->color = colors.LABEL_6;
+            }
+            else if(strcmp(text, "7")==0){
+                dsc->label_dsc->color = colors.LABEL_7;
+            }
+            else if(strcmp(text, "8")==0){
+                dsc->label_dsc->color = colors.LABEL_8;
+            }
+            
         }
     }
 }
