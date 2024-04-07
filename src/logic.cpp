@@ -42,6 +42,7 @@ void logic_generate_level(logic_data *game_data) {
         logic_generate_bomb(game_data);
     }
     logic_generate_neighbours(game_data);
+    count_mines(*game_data);
 }
 
 void logic_generate_bomb(logic_data *game_data) {
@@ -50,7 +51,9 @@ void logic_generate_bomb(logic_data *game_data) {
     do {
         x = random(0, game_data->rows);
         y = random(0, game_data->cols);
-    } while (game_data->grid[x][y].value != TILE_VALUE_NOT_GENERATED && game_data->grid[x][y].value != TILE_VALUE_BOMB);
+       // Serial.printf("\nMine false x:%d, y:%d, value:%d",x,y,game_data->grid[x][y].value);
+    } while (!(game_data->grid[x][y].value == TILE_VALUE_NOT_GENERATED && game_data->grid[x][y].value != TILE_VALUE_BOMB));
+    //Serial.printf("\nMine true x:%d, y:%d, value:%d",x,y,game_data->grid[x][y].value);
     game_data->grid[x][y].value = TILE_VALUE_BOMB;
 }
 // Array that makes finding neighbours easier

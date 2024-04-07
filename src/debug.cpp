@@ -32,4 +32,13 @@ void debug_print_user_perspective(logic_data game_data){
     }
    }
 }
+void count_mines(logic_data game_data){
+   int count = 0;
+   for(int i=0; i<game_data.rows; i++){
+      for(int j=0; j<game_data.cols; j++){
+         if(game_data.grid[i][j].value == TILE_VALUE_BOMB) count++;
+      }
+   }
+   Serial.printf("Mine number: %d", count);
+}
 
