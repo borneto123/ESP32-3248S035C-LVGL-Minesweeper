@@ -51,3 +51,8 @@ void gui_timer_widget_style_init(){
     lv_style_set_width(&gui_style_timer_widget, GUI_TIMER_WIDGET_WIDTH);
     lv_style_set_height(&gui_style_timer_widget, GUI_TIMER_WIDGET_HEIGHT);
 }
+
+
+void gui_timer_widget_delete(gui_timer_widget* timer){
+    lv_obj_del(timer->div);
+}

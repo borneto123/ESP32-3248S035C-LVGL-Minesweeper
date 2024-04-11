@@ -25,4 +25,5 @@ static lv_style_t gui_style_mine_counter_widget;
 
 void gui_mine_counter_style_init();
 
+void gui_mine_counter_widget_delete(gui_mine_counter_widget* counter);
 #endif

@@ -4,6 +4,8 @@
 #include <gui_grid_widget.hpp>
 
 style_colors colors;
+gui_data_matrix_callback* cbData = new gui_data_matrix_callback;
+
 LV_FONT_DECLARE(minesweeper_font);
 void gui_grid_widget_create(gui_grid_widget* grid, struct logic_data* game_data, lv_obj_t* parent) {
     grid->cols = game_data->cols;
@@ -44,7 +46,6 @@ void gui_create_grid_widget_matrix(gui_grid_widget* grid, int rows, int cols, lo
     lv_style_set_border_width(&style_bg, 0);
     lv_style_set_radius(&style_bg, 0);
     //Try to free this memory later
-    gui_data_matrix_callback* cbData = new gui_data_matrix_callback;
     cbData->game_data = game_data;
     cbData->grid = grid;
     lv_obj_add_style(grid->matrix, &style_bg, 0);
@@ -122,6 +123,7 @@ void gui_matrix_callback(lv_event_t* e) {
             
         }
     }
+    
 }
 
 void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data) {
@@ -149,4 +151,9 @@ void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data) {
         }
         j_data++;
     }
+}
+
+void gui_grid_widget_delete(gui_grid_widget* grid){
+    lv_obj_del(grid->div);
+    delete grid->display_values;
 }

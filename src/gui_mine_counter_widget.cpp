@@ -35,3 +35,7 @@ void gui_mine_counter_style_init(){
     lv_style_set_width(&gui_style_mine_counter_widget, GUI_MINE_COUNTER_WIDGET_WIDTH);
     lv_style_set_height(&gui_style_mine_counter_widget, GUI_MINE_COUNTER_HEIGHT);
 }
+
+void gui_mine_counter_widget_delete(gui_mine_counter_widget* counter){
+    lv_obj_del(counter->div);
+}

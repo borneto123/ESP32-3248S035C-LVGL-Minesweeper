@@ -95,7 +95,7 @@ void logic_click_tile_main(int x, int y, logic_data *game_data) {
             logic_click_non_zero_tile(x, y, game_data);
         }
     }
-    //debug_print_grid_display(*game_data);
+    //debug_print_grid_display(*game_data);1
     test_hidden_tiles(*game_data);
     if(game_data->hidden_tiles == 0){
         game_data->state = LOGIC_DATA_STATE_WON;
@@ -181,17 +181,8 @@ void logic_click_zero_tile(int x, int y, logic_data *game_data) {
     }
 }
 
-void logic_data_reset(logic_data* game_data){
+void logic_data_delete(logic_data *game_data){
 
-    game_data->state = LOGIC_DATA_STATE_NOT_GENERATED;
-    game_data->mines_remaining = game_data->mines_total;
-    logic_data_free_grid(game_data->grid);
-    game_data->grid = logic_create_grid(game_data->rows,game_data->cols);
-    logic_generate_level(game_data);
-}
-
-void logic_data_free_grid(logic_tile** grid){
-
-    delete[] grid;
+    delete[] game_data->grid;
 
 }

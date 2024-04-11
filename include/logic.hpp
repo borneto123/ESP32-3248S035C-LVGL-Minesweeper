@@ -146,10 +146,7 @@ void logic_mines_remaining_increment(logic_data *game_data);
 
 void logic_mines_remaining_decrement(logic_data *game_data);
 
-void logic_data_reset(logic_data* game_data);
 
-void logic_data_free_grid(logic_tile** grid);
+void logic_data_delete(logic_data *game_data);
 
-// TO-DO
-void deleteGrid(logic_tile **grid);
 #endif

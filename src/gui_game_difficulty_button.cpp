@@ -26,7 +26,7 @@ void gui_game_difficulty_button_cb(lv_event_t * e){
     lv_obj_t* obj = lv_event_get_target(e);
     gui_game_difficulty_button* difficulty = (gui_game_difficulty_button*)lv_event_get_user_data(e);
     if(code == LV_EVENT_CLICKED){
-        lv_obj_del(obj);
+       // lv_obj_del(obj);
         gui_game_widget_create(difficulty->master, *difficulty->settings, lv_scr_act());
     }       
 }

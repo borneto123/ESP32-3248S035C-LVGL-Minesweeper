@@ -83,4 +83,6 @@ static lv_style_t gui_style_timer_widget;
 void gui_timer_widget_style_init();
 
 
+void gui_timer_widget_delete(gui_timer_widget* timer);
+
 #endif
