@@ -48,9 +48,11 @@ struct logic_data {
     logic_tile **grid;
     int mines_total;
     int mines_remaining;
+    int hidden_tiles;
     int rows;
     int cols;
     int state;
+    int seed;
 };
 
 /**
@@ -71,7 +73,7 @@ logic_tile **logic_create_grid(int rows, int cols);
  * @param mines_total number of mines that will be put on grid
  * @return logic_data
  */
-void logic_create_logic_data(logic_data* game_data, int rows, int cols, int mines_total);
+void logic_create_logic_data(logic_data* game_data, int rows, int cols, int mines_total, int seed);
 
 /**
  * @brief Fucntion that generates all values in logic_data grid

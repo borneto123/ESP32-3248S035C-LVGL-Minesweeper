@@ -1,9 +1,10 @@
 #include <logic_game_difficulty.hpp>
 
-void logic_game_difficulty_create(logic_game_difficulty* difficulty, int rows, int cols, int mines){
+void logic_game_difficulty_create(logic_game_difficulty* difficulty, int rows, int cols, int mines,int seed){
     difficulty->rows = rows;
     difficulty->cols = cols;
     difficulty->mines = mines;
+    difficulty->seed = seed;
 }
 
 void logic_game_difficulty_set(logic_game_difficulty* difficulty, int opt, int value){

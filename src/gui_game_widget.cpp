@@ -7,7 +7,7 @@ void gui_game_widget_create(gui_game_widget* master, logic_game_difficulty diffi
     master->master_counter = new gui_mine_counter_widget;
     master->master_timer = new gui_timer_widget;
 
-    logic_create_logic_data(master->master_grid_data, difficulty.rows, difficulty.cols, difficulty.mines);
+    logic_create_logic_data(master->master_grid_data, difficulty.rows, difficulty.cols, difficulty.mines, difficulty.seed);
     Serial.println("Logic Data Created");
     gui_game_widget_create_div(master, difficulty, parent);
     Serial.println("Gui_game_widget_div");

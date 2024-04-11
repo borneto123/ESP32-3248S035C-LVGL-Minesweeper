@@ -29,5 +29,9 @@ void debug_print_grid_display(logic_data game_data);
 void debug_print_user_perspective(logic_data game_data);
 
 void count_mines(logic_data game_data);
+
+void print_hidden_tiles(logic_data game_data);
+
+void test_hidden_tiles(logic_data game_data);
 //Provjeri jel radi za sve
 #endif

@@ -39,6 +39,26 @@ void count_mines(logic_data game_data){
          if(game_data.grid[i][j].value == TILE_VALUE_BOMB) count++;
       }
    }
-   Serial.printf("Mine number: %d", count);
+   Serial.printf("\nMine number: %d", count);
 }
 
+void print_hidden_tiles(logic_data game_data){
+   Serial.printf("\nCurrent hidden tiles remaining: %d", game_data.hidden_tiles);
+}
+
+void test_hidden_tiles(logic_data game_data){
+   int realCount = 0;
+      for(int i=0; i<game_data.rows; i++){
+      for(int j=0; j<game_data.cols; j++){
+         if(
+            game_data.grid[i][j].value != TILE_VALUE_BOMB 
+            && game_data.grid[i][j].display != TILE_DISPLAY_SHOWN 
+         ) realCount++;
+      }
+   }
+   Serial.println("-------------------------------------");
+   Serial.printf("\nReal count:%d",realCount);
+   Serial.printf("\nFast count:%d",game_data.hidden_tiles);
+   Serial.printf("\nCheck: %d", realCount == game_data.hidden_tiles);
+   Serial.println("\n-------------------------------------");
+}

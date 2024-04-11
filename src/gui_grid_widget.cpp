@@ -4,7 +4,7 @@
 #include <gui_grid_widget.hpp>
 
 style_colors colors;
-
+LV_FONT_DECLARE(minesweeper_font);
 void gui_grid_widget_create(gui_grid_widget* grid, struct logic_data* game_data, lv_obj_t* parent) {
     grid->cols = game_data->cols;
     grid->rows = game_data->rows;
@@ -50,6 +50,7 @@ void gui_create_grid_widget_matrix(gui_grid_widget* grid, int rows, int cols, lo
     lv_obj_add_style(grid->matrix, &style_bg, 0);
     lv_obj_set_style_radius(grid->matrix, 0 ,LV_PART_ITEMS );
     lv_obj_set_style_border_width(grid->matrix, 1, LV_PART_ITEMS);
+    lv_obj_set_style_text_font(grid->matrix,&minesweeper_font, LV_PART_ITEMS);
     lv_obj_set_style_bg_color(grid->matrix, lv_color_make(150, 150, 150), LV_PART_ITEMS);
     lv_obj_add_event_cb(grid->matrix, gui_matrix_callback, LV_EVENT_ALL, cbData);
 }
@@ -78,6 +79,7 @@ void gui_matrix_callback(lv_event_t* e) {
             cords c = help_convert_id_to_cordinates(id, cols);
             logic_click_flag_tile(c.x, c.y, cbData->game_data);
             gui_refresh_grid_widget_display_values(cbData);
+            Serial.printf("Long: %d", id);
         }
     }
 
@@ -87,34 +89,34 @@ void gui_matrix_callback(lv_event_t* e) {
 //dsc->rect_dsc->radius = 0;
             // make every color at start
             const char* text = lv_btnmatrix_get_btn_text(obj, dsc->id);
-            if(!(strcmp(text, "  ")==0) && !(strcmp(lv_btnmatrix_get_btn_text(obj, dsc->id), "F")==0)){
+            if(!(strcmp(text, "  ")==0) && !(strcmp(lv_btnmatrix_get_btn_text(obj, dsc->id), "`")==0)){
                 dsc->rect_dsc->bg_color = colors.BACKGROUND_CLICKED;
             }
-            if(strcmp(text, "0")==0){
+            if(text[0]=='0'){
                 dsc->label_dsc->opa = 0;
             }
-            if(strcmp(text, "1")==0){
+            if(text[0]=='1'){
                 dsc->label_dsc->color = colors.LABEL_1;
             }
-            else if(strcmp(text, "2")==0){
+            else if(text[0]=='2'){
                 dsc->label_dsc->color = colors.LABEL_2;
             }
-            else if(strcmp(text, "3")==0){
+            else if(text[0]=='3'){
                 dsc->label_dsc->color = colors.LABEL_3;
             }
-            else if(strcmp(text, "4")==0){
+            else if(text[0]=='4'){
                 dsc->label_dsc->color = colors.LABEL_4;
             }
-            else if(strcmp(text, "5")==0){
+            else if(text[0]=='5'){
                 dsc->label_dsc->color = colors.LABEL_5;
             }
-            else if(strcmp(text, "6")==0){
+            else if(text[0]=='6'){
                 dsc->label_dsc->color = colors.LABEL_6;
             }
-            else if(strcmp(text, "7")==0){
+            else if(text[0]=='7'){
                 dsc->label_dsc->color = colors.LABEL_7;
             }
-            else if(strcmp(text, "8")==0){
+            else if(text[0]=='8'){
                 dsc->label_dsc->color = colors.LABEL_8;
             }
             
@@ -139,7 +141,7 @@ void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data) {
         }
 
         else if (cb_data->game_data->grid[i_data][j_data].display == TILE_DISPLAY_FLAGGED) {
-            sprintf(cb_data->grid->display_values[i], "F");
+            sprintf(cb_data->grid->display_values[i], "`");
         }
 
         else if (cb_data->game_data->grid[i_data][j_data].display == TILE_DISPLAY_HIDDEN) {
