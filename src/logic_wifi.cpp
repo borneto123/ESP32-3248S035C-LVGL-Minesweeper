@@ -29,22 +29,25 @@ int wifi_device_type(){
     else if(WiFi.macAddress() == mac_str[WIFI_DEVICE_SLAVE]) return WIFI_DEVICE_SLAVE;
 }
 
-void wifi_init(){
+void wifi_init(gui_menu* menu){
+    Serial.println("Starting wifi");
+    device.menu = menu;
     int dev_type = wifi_device_type();
     int peer_type = !dev_type;
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error initializing ESP-NOW");
         return;
     }
+    Serial.println("Started esp_now");
     esp_now_register_send_cb(wifi_on_data_sent);
     memcpy(device.peer_info.peer_addr, mac[peer_type],6);
     device.peer_info.channel = 0;
     device.peer_info.encrypt = false;
 
-    if (esp_now_add_peer(&device.peer_info) != ESP_OK){
-        Serial.println("Failed to add peer");
-        return;
-    }
+    do{
+      Serial.println("Adding peer failed");
+    }while(esp_now_add_peer(&device.peer_info) != ESP_OK);
+    Serial.println("Added peer");
     esp_now_register_recv_cb(wifi_on_data_recv);
 }
 
@@ -68,7 +71,10 @@ void wifi_on_data_recv(const uint8_t * mac, const uint8_t *incomingData, int len
 }
 
 void wifi_handle_new_data(){
-    Serial.println(device.receive.test);
+    if(device.receive.type == WIFI_PACKET_DIFFICULTY){
+        Serial.println("Primljen difficulty");
+        gui_menu_slave_receive_difficulty(device);
+    }
 }
 
 void wifi_send_data(){
@@ -84,7 +90,13 @@ void wifi_send_data(){
 
 void wifi_send_test(){
 
-    device.send.type = -1;
+    device.send.type = WIFI_PACKET_TEST;
     device.send.test = 23;
     wifi_send_data(); 
+}
+
+void wifi_send_difficulty(logic_game_difficulty difficulty){
+    device.send.type = WIFI_PACKET_DIFFICULTY;
+    device.send.difficulty = difficulty;
+    wifi_send_data();
 }

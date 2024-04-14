@@ -14,6 +14,7 @@ struct gui_game_widget{
     gui_mine_counter_widget* master_counter;
     bool started = false;
     bool created = false;
+    int online_mode;
 };
 
 void gui_game_widget_create(
@@ -36,4 +37,8 @@ void gui_game_widget_create_button(
 void gui_game_widget_button_cb(lv_event_t* e);
 
 void gui_game_widget_delete(gui_game_widget* master);
+
+void gui_game_widget_singleplayer(gui_game_widget* master);
+
+void gui_game_widget_multiplayer(gui_game_widget* master);
 #endif
