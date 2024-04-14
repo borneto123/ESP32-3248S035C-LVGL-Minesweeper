@@ -304,7 +304,7 @@ void GT911_Scan(void)
       {
         touched = 0;
         GT911_WR_Reg(GT911_READ_XY_REG, (uint8_t *)&Clearbuf, 1);
-        Serial.printf("Dev_Now.TouchCount > 5\r\n");
+        //Serial.printf("Dev_Now.TouchCount > 5\r\n");
         return ;
       }
       GT911_RD_Reg(GT911_READ_XY_REG + 1, &buf[1], Dev_Now.TouchCount * 8);
@@ -375,7 +375,7 @@ uint8_t GT911_ReadStatue(void)
   uint8_t buf[4];
   GT911_RD_Reg(GT_PID_REG, (uint8_t *)&buf[0], 3); 
   GT911_RD_Reg(GT_CFGS_REG, (uint8_t *)&buf[3], 1);
-  Serial.printf("TouchPad_ID:%d,%d,%d\r\nTouchPad_Config_Version:%2x\r\n", buf[0], buf[1], buf[2], buf[3]);
+ // Serial.printf("TouchPad_ID:%d,%d,%d\r\nTouchPad_Config_Version:%2x\r\n", buf[0], buf[1], buf[2], buf[3]);
   return buf[3];
 }
 
@@ -406,16 +406,16 @@ void GT911_Int()
   {
     config_Checksum += s_GT911_CfgParams[i];
 
-    Serial.printf("0x%02X  ", s_GT911_CfgParams[i]);
+    //Serial.printf("0x%02X  ", s_GT911_CfgParams[i]);
     if ((i + 1) % 10 == 0)
       Serial.printf("\r\n");
   }
-  Serial.printf("0x%02X  0x%02X\r\nconfig_Checksum=0x%2X\r\n", s_GT911_CfgParams[184], s_GT911_CfgParams[185], ((~config_Checksum) + 1) & 0xff);
+  //Serial.printf("0x%02X  0x%02X\r\nconfig_Checksum=0x%2X\r\n", s_GT911_CfgParams[184], s_GT911_CfgParams[185], ((~config_Checksum) + 1) & 0xff);
 
   if (s_GT911_CfgParams[184] == (((~config_Checksum) + 1) & 0xff))
   {
-    Serial.printf("READ CONFIG SUCCESS!\r\n");
-    Serial.printf("%d*%d\r\n", s_GT911_CfgParams[2] << 8 | s_GT911_CfgParams[1], s_GT911_CfgParams[4] << 8 | s_GT911_CfgParams[3]);
+    //Serial.printf("READ CONFIG SUCCESS!\r\n");
+    //Serial.printf("%d*%d\r\n", s_GT911_CfgParams[2] << 8 | s_GT911_CfgParams[1], s_GT911_CfgParams[4] << 8 | s_GT911_CfgParams[3]);
 
     if ((GT911_MAX_WIDTH != (s_GT911_CfgParams[2] << 8 | s_GT911_CfgParams[1])) || (GT911_MAX_HEIGHT != (s_GT911_CfgParams[4] << 8 | s_GT911_CfgParams[3])))
     {

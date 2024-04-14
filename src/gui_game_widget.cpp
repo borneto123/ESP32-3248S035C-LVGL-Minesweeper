@@ -61,5 +61,6 @@ void gui_game_widget_button_cb(lv_event_t* e){
     gui_game_widget* master = (gui_game_widget*)lv_event_get_user_data(e); 
     if(code == LV_EVENT_CLICKED){
         gui_game_widget_delete(master);
+        
     }
 }

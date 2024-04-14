@@ -18,6 +18,7 @@ struct gui_menue
     gui_game_difficulty_button* hard;
     gui_game_difficulty_button* custom;
     lv_obj_t* next_page_button;
+    int online_mode;
     //Mine slider
     //Height slider
     //Width slider
@@ -31,6 +32,10 @@ void gui_menue_create_next_page_button(gui_menue* menue);
 
 void gui_menue_next_page_button_cb(lv_event_cb_t* e);
 
+void gui_menue_hide();
+void gui_menue_show();
 
+void gui_menue_singleplayer();
+void gui_menue_multiplayer();
 
 #endif
