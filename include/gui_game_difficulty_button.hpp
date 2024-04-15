@@ -4,6 +4,10 @@
 #include <logic_game_difficulty.hpp>
 #include <gui_game_widget.hpp>
 
+struct gui_game_widget;
+struct gui_game_difficulty_button;
+struct logic_game_difficulty;
+
 struct gui_game_difficulty_button{
 
     logic_game_difficulty* settings;
@@ -11,6 +15,8 @@ struct gui_game_difficulty_button{
     lv_obj_t* button;
     int online_mode;
 };
+
+
 
 void gui_game_difficulty_button_create(
     gui_game_widget* master, 

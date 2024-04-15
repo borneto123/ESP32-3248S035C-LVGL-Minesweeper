@@ -3,7 +3,7 @@
 #include <lvgl.h>
 #include <logic.hpp>
 #include <help.hpp>
-
+struct logic_data;
 enum gui_grid_widget_constants{
     GRID_WIDGET_HEIGHT = 430,
     GRID_TILE_WIDTH = 40,

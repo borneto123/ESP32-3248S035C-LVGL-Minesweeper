@@ -3,6 +3,8 @@
 #include <lvgl.h>
 #include <logic.hpp>
 
+struct logic_data;
+
 enum gui_mine_counter_widget_contant{
     GUI_MINE_COUNTER_WIDGET_WIDTH = 100,
     GUI_MINE_COUNTER_HEIGHT = 50,

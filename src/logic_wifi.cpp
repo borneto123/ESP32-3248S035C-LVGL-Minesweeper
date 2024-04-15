@@ -75,6 +75,10 @@ void wifi_handle_new_data(){
         Serial.println("Primljen difficulty");
         gui_menu_slave_receive_difficulty(device);
     }
+    if(device.receive.type == WIFI_PACKET_SLAVE_END){
+        Serial.println("Primljen slave result");
+        logic_data_slave_master_receive(device);
+    }
 }
 
 void wifi_send_data(){
@@ -93,6 +97,12 @@ void wifi_send_test(){
     device.send.type = WIFI_PACKET_TEST;
     device.send.test = 23;
     wifi_send_data(); 
+}
+
+void wifi_send_result_slave(logic_end_game_data logic_end_game_data){
+    device.send.type = WIFI_PACKET_SLAVE_END;
+    device.send.end_game_data = logic_end_game_data;
+    wifi_send_data();
 }
 
 void wifi_send_difficulty(logic_game_difficulty difficulty){

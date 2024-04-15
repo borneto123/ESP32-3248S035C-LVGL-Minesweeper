@@ -23,6 +23,8 @@ void gui_game_widget_create(gui_game_widget* master, logic_game_difficulty diffi
 
     master->started = true;
     master->created = true;
+
+    logic_data_set_game_widget(master->master_grid_data, master);
 }
 
 void gui_game_widget_create_div(gui_game_widget* master, logic_game_difficulty difficulty, lv_obj_t* parent){

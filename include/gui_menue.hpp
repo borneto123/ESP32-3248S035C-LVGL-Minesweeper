@@ -10,7 +10,8 @@ enum gui_difficulty_menue_constants{
 };
 
 struct wifi_data;
-
+struct gui_game_difficulty_button;
+struct gui_game_widget;
 struct gui_menu
 {
     int page = GUI_DIFFICULTY_MENUE_DEFAULT;

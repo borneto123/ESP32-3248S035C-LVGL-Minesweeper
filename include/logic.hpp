@@ -1,6 +1,9 @@
 
 #ifndef _LOGIC_
 #define _LOGIC_
+#include <gui_game_widget.hpp>
+#include <logic_end_game_data.hpp>
+#include <logic_wifi.hpp>
 enum logic_tile_display_constants {
     TILE_DISPLAY_HIDDEN = 0,
     TILE_DISPLAY_SHOWN = 1,
@@ -18,6 +21,7 @@ enum logic_logic_data_state_constants {
     LOGIC_DATA_STATE_ON_GOING = 2,
     LOGIC_DATA_STATE_LOST = 3,
     LOGIC_DATA_STATE_WON = 4,
+    LOGIC_DATA_STATE_WAITING,
 };
 
 /**
@@ -44,7 +48,13 @@ struct logic_tile {
  * - `state` `0` not generated `1` generated `2` game is ongoing `3` game lost,
  * `4` game won
  */
+
+struct gui_game_widget;
+struct wifi_data;
 struct logic_data {
+    logic_end_game_data end_data_packet;
+    logic_end_game_data end_data_local;
+    gui_game_widget* master;
     logic_tile **grid;
     int mines_total;
     int mines_remaining;
@@ -149,4 +159,11 @@ void logic_mines_remaining_decrement(logic_data *game_data);
 
 void logic_data_delete(logic_data *game_data);
 
+
+void logic_data_set_game_widget(logic_data *game_data, gui_game_widget* master);
+
+
+int logic_data_calculate_score(logic_data *game_data);
+
+void logic_data_slave_master_receive(wifi_data device);
 #endif

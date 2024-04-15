@@ -31,9 +31,8 @@ void loop()
 	if(test.started){ 
 		gui_timer_widget_refresh(test.master_timer);
 		gui_mine_counter_widget_refresh(test.master_counter, test.master_grid_data);
-		if(test.master_grid_data->state >2){
-		gui_timer_widget_stop(test.master_timer);
-	}
+		
+	
 	}
 	
 		

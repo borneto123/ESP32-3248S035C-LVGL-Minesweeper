@@ -5,6 +5,10 @@
 #include <gui_mine_counter_widget.hpp>
 #include <logic.hpp>
 #include <logic_game_difficulty.hpp>
+
+struct gui_grid_widget;
+struct gui_mine_counter_widget;
+
 struct gui_game_widget{
     lv_obj_t* div;
     lv_obj_t* back_button;

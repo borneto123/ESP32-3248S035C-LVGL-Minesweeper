@@ -6,8 +6,9 @@
 #include <logic_game_difficulty.hpp>
 #include <logic_game_difficulty.hpp>
 #include <gui_menue.hpp>
-
+#include <logic_end_game_data.hpp>
 struct gui_menu;
+struct logic_data;
 
 enum wifi_device_type{
     WIFI_DEVICE_MASTER,
@@ -17,8 +18,9 @@ enum wifi_device_type{
 enum wifi_packet_type{
     WIFI_PACKET_TEST,
     WIFI_PACKET_DIFFICULTY,
-    WIFI_PACKET_SLAVE_SCORE,
-    WIFI_PACKET_GAME_RESULT
+    WIFI_PACKET_SLAVE_END,
+    WIFI_PACKET_MASTER_WIN,
+    WIFI_PACKET_SLAVE_WIN
 };
 
 extern uint8_t mac[2][6];
@@ -27,6 +29,7 @@ extern String mac_str[2];
 struct wifi_packet{
     uint8_t type; // 0 - logic // 1-lost // 2-win //-1- test
     logic_game_difficulty difficulty;
+    logic_end_game_data end_game_data;
     int test;
 };
 
@@ -57,4 +60,5 @@ void wifi_send_data();
 void wifi_send_test();
 
 void wifi_send_difficulty(logic_game_difficulty difficulty);
+void wifi_send_result_slave(logic_end_game_data logic_end_game_data);
 #endif 

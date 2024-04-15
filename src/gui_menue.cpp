@@ -59,9 +59,11 @@ void gui_menue_create_div(gui_menu* menue, lv_obj_t* parent){
 
 void gui_menu_singleplayer(gui_menu* menu){
     menu->online_mode = 0;
+    menu->master->online_mode = 0;
 }
 void gui_menu_multiplayer(gui_menu* menu){
     menu->online_mode = 1;
+    menu->master->online_mode = 1;
     wifi_init(menu);
     Serial.println("Wifi initialized");
     if(wifi_device_type() == WIFI_DEVICE_SLAVE){
