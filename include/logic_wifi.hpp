@@ -19,8 +19,7 @@ enum wifi_packet_type{
     WIFI_PACKET_TEST,
     WIFI_PACKET_DIFFICULTY,
     WIFI_PACKET_SLAVE_END,
-    WIFI_PACKET_MASTER_WIN,
-    WIFI_PACKET_SLAVE_WIN
+    WIFI_PACKET_FINALE_RESULT,
 };
 
 extern uint8_t mac[2][6];
@@ -61,4 +60,6 @@ void wifi_send_test();
 
 void wifi_send_difficulty(logic_game_difficulty difficulty);
 void wifi_send_result_slave(logic_end_game_data logic_end_game_data);
+
+void wifi_send_result_finale(logic_end_game_data logic_end_game_data);
 #endif 

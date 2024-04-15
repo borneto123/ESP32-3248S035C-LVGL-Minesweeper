@@ -137,6 +137,7 @@ void logic_click_bomb_tile(int x, int y, logic_data *game_data) {
         if(wifi_device_type() == WIFI_DEVICE_MASTER){
             if(game_data->end_data_packet.state = LOGIC_DATA_STATE_WAITING){
                 // Send result
+                Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(game_data));
             }
         }
     }
@@ -228,4 +229,14 @@ int logic_data_calculate_score(logic_data *game_data){
 void logic_data_slave_master_receive(wifi_data device){
     Serial.println("Test");
     device.menu->master->master_grid_data->end_data_packet = device.receive.end_game_data;
-    }
+    Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(device.menu->master->master_grid_data));
+}
+
+bool logic_data_can_generate_result_packet(logic_data *game_data){
+    return game_data->end_data_local.state == LOGIC_DATA_STATE_WAITING &&
+            game_data->end_data_local.state == LOGIC_DATA_STATE_WAITING;
+}
+
+logic_end_game_data logic_data_generate_result_packet(logic_data *game_data){
+
+}

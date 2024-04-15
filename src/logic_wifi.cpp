@@ -110,3 +110,9 @@ void wifi_send_difficulty(logic_game_difficulty difficulty){
     device.send.difficulty = difficulty;
     wifi_send_data();
 }
+
+void wifi_send_result_finale(logic_end_game_data logic_end_game_data){
+      device.send.type = WIFI_PACKET_FINALE_RESULT;
+      device.send.end_game_data = logic_end_game_data;
+      wifi_send_data();
+}
