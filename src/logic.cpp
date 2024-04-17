@@ -29,6 +29,9 @@ logic_tile **logic_create_grid(int rows, int cols) {
 
 void logic_create_logic_data(logic_data* game_data, int rows, int cols, int mines_total, int seed) {
     
+    game_data->end_data_local.state = LOGIC_DATA_STATE_ON_GOING;
+    game_data->end_data_packet.state = LOGIC_DATA_STATE_ON_GOING;
+
     game_data->seed = seed;
     game_data->grid = logic_create_grid(rows, cols);
     game_data->rows = rows;
@@ -103,13 +106,7 @@ void logic_click_tile_main(int x, int y, logic_data *game_data) {
     test_hidden_tiles(*game_data);
     if(game_data->hidden_tiles == 0){
         game_data->state = LOGIC_DATA_STATE_WON;
-        gui_end_screen_widget* won = new gui_end_screen_widget;
-        logic_end_game_data* end_data = new logic_end_game_data;
-        end_data->score = logic_data_calculate_score(game_data);
-        gui_timer_widget_stop(game_data->master->master_timer);
-        end_data->time = game_data->master->master_timer->current_time;
-        end_data->state = LOGIC_DATA_STATE_WON;
-        gui_end_screen_widget_create(won, *end_data);
+        logic_data_handle_end_screen(game_data);
     }
     }
     print_hidden_tiles(*game_data);
@@ -118,31 +115,44 @@ void logic_click_tile_main(int x, int y, logic_data *game_data) {
 void logic_click_bomb_tile(int x, int y, logic_data *game_data) {
     game_data->state = LOGIC_DATA_STATE_LOST;
     Serial.println("Game lost");
-
-    gui_end_screen_widget* lost = new gui_end_screen_widget;
+    logic_data_handle_end_screen(game_data);
     
+}
+
+void logic_data_handle_end_screen(logic_data *game_data){
+    gui_end_screen_widget* end = new gui_end_screen_widget;
+    Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(game_data));
     
     game_data->end_data_local.score = logic_data_calculate_score(game_data);
     gui_timer_widget_stop(game_data->master->master_timer);
     game_data->end_data_local.time = game_data->master->master_timer->current_time;
     Serial.printf("\nOnline mode: %d\n",game_data->master->online_mode);
+    Serial.printf("\nGame state %d",game_data->end_data_packet.state);
     if(game_data->master->online_mode == 0){
-    game_data->end_data_local.state = LOGIC_DATA_STATE_LOST;
+    game_data->end_data_local.state = game_data->state;
+    gui_end_screen_widget_create(end, game_data->end_data_local);
+    return;
     }
     if(game_data->master->online_mode == 1){
+        if(game_data->end_data_packet.state != LOGIC_DATA_STATE_END)
         game_data->end_data_local.state = LOGIC_DATA_STATE_WAITING;
         if(wifi_device_type() == WIFI_DEVICE_SLAVE){
             wifi_send_result_slave(game_data->end_data_local);
         }
         if(wifi_device_type() == WIFI_DEVICE_MASTER){
-            if(game_data->end_data_packet.state = LOGIC_DATA_STATE_WAITING){
-                // Send result
-                Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(game_data));
+
+            if(game_data->end_data_packet.state == LOGIC_DATA_STATE_WAITING){
+                
+                if(logic_data_can_generate_result_packet(game_data))
+                wifi_send_result_finale(logic_data_generate_result_packet(game_data));
             }
         }
     }
-    gui_end_screen_widget_create(lost, game_data->end_data_local);
+    gui_end_screen_widget_create(end, game_data->end_data_local);
 }
+
+
+
 
 void logic_click_non_zero_tile(int x, int y, logic_data *game_data) {
     game_data->grid[x][y].display = TILE_DISPLAY_SHOWN;
@@ -230,13 +240,57 @@ void logic_data_slave_master_receive(wifi_data device){
     Serial.println("Test");
     device.menu->master->master_grid_data->end_data_packet = device.receive.end_game_data;
     Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(device.menu->master->master_grid_data));
+    if(logic_data_can_generate_result_packet(device.menu->master->master_grid_data))
+    wifi_send_result_finale(logic_data_generate_result_packet(device.menu->master->master_grid_data)); // CHECK THIS LATER
 }
 
 bool logic_data_can_generate_result_packet(logic_data *game_data){
-    return game_data->end_data_local.state == LOGIC_DATA_STATE_WAITING &&
+    Serial.printf("Packet: %d", game_data->end_data_packet.state);
+    Serial.printf("Local: %d", game_data->end_data_local.state);
+
+    return game_data->end_data_packet.state == LOGIC_DATA_STATE_WAITING &&
             game_data->end_data_local.state == LOGIC_DATA_STATE_WAITING;
 }
 
 logic_end_game_data logic_data_generate_result_packet(logic_data *game_data){
-
+    logic_end_game_data result;
+    result = game_data->end_data_packet;
+    if(logic_data_can_generate_result_packet(game_data)){
+        if(game_data->end_data_local.score>game_data->end_data_packet.score){
+            //This is data for slave
+            result.state = LOGIC_DATA_STATE_LOST;
+            game_data->end_data_local.state = LOGIC_DATA_STATE_WON;
+            
+        }
+        else if(game_data->end_data_local.score<game_data->end_data_packet.score){
+            result.state = LOGIC_DATA_STATE_WON;
+            game_data->end_data_local.state = LOGIC_DATA_STATE_LOST;
+        }
+        else if(game_data->end_data_local.time>game_data->end_data_packet.time){
+            //This is data for slave
+            result.state = LOGIC_DATA_STATE_LOST;
+            game_data->end_data_local.state = LOGIC_DATA_STATE_WON;
+        }
+        
+        else if(game_data->end_data_local.time<game_data->end_data_packet.time){
+            //This is data for slave
+            result.state = LOGIC_DATA_STATE_WON;
+            game_data->end_data_local.state = LOGIC_DATA_STATE_LOST;
+        }
+        else{
+            result.state = LOGIC_DATA_STATE_TIE;
+            game_data->end_data_local.state = LOGIC_DATA_STATE_TIE;
+        }
+    }
+    else{
+        Serial.println("Error trying to generate end game data");
+        
+    }
+    game_data->end_data_packet.state = LOGIC_DATA_STATE_END;
+    logic_data_handle_end_screen(game_data);
+    return result;
 }
+
+
+// Add function for slave to recive data and call function to spawn end screen
+// Think about a way to rmeove second endscreen once it is over

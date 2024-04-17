@@ -21,6 +21,8 @@ enum logic_logic_data_state_constants {
     LOGIC_DATA_STATE_ON_GOING = 2,
     LOGIC_DATA_STATE_LOST = 3,
     LOGIC_DATA_STATE_WON = 4,
+    LOGIC_DATA_STATE_TIE,
+    LOGIC_DATA_STATE_END,
     LOGIC_DATA_STATE_WAITING,
 };
 
@@ -170,4 +172,7 @@ void logic_data_slave_master_receive(wifi_data device);
 bool logic_data_can_generate_result_packet(logic_data *game_data);
 
 logic_end_game_data logic_data_generate_result_packet(logic_data *game_data);
+
+void logic_data_handle_end_screen(logic_data *game_data);
+
 #endif

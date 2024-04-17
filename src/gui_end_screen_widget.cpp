@@ -10,6 +10,9 @@ void gui_end_screen_widget_create(gui_end_screen_widget* screen, logic_end_game_
     else if(end_game_data.state == LOGIC_DATA_STATE_WON){
         sprintf(header, "YOU WON");
     }
+    else if(end_game_data.state == LOGIC_DATA_STATE_TIE){
+        sprintf(header, "GAME IS TIED");
+    }
     else if(end_game_data.state == LOGIC_DATA_STATE_WAITING){
         sprintf(header, "WAITING FOR OTHER PLAYER");
     }
