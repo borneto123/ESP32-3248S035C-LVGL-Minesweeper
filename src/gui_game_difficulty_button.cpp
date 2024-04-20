@@ -30,7 +30,8 @@ void gui_game_difficulty_button_cb(lv_event_t * e){
         if(difficulty->online_mode == 1 && wifi_device_type() == WIFI_DEVICE_MASTER){
             //Add online mode logic
             Serial.println("Sending data");
-            difficulty->settings->seed = millis()%100;
+            
+            difficulty->settings->seed = millis();
             wifi_send_difficulty(*difficulty->settings);
             gui_game_widget_multiplayer(difficulty->master);
         }

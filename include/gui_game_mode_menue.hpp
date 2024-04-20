@@ -2,6 +2,9 @@
 #define _GAME_MODE_
 #include <lvgl.h>
 #include <gui_menue.hpp>
+
+struct gui_menu;
+
 struct gui_game_mode_menue{
     lv_obj_t* div;
     lv_obj_t* header;

@@ -3,6 +3,7 @@ void gui_menu_create(gui_menu* menue,gui_game_widget* master, lv_obj_t* parent){
     
     gui_menue_create_div(menue, parent);
     gui_menu_waiting_create(menue, parent);
+    //gui_menue_create_back_button(menue, parent); THIS
     menue->online_mode = -1;
     menue->easy = new gui_game_difficulty_button;
     menue->medium = new gui_game_difficulty_button;
@@ -12,9 +13,9 @@ void gui_menu_create(gui_menu* menue,gui_game_widget* master, lv_obj_t* parent){
     logic_game_difficulty* medium_data = new logic_game_difficulty;
     logic_game_difficulty* hard_data = new logic_game_difficulty;
 
-    logic_game_difficulty_create(easy_data, 9, 9, 10,NULL);
-    logic_game_difficulty_create(medium_data, 14, 14, 40,NULL);
-    logic_game_difficulty_create(hard_data, 20, 20, 99,NULL);
+    logic_game_difficulty_create(easy_data, 9, 9, 10, NULL);
+    logic_game_difficulty_create(medium_data, 14, 14, 40, NULL);
+    logic_game_difficulty_create(hard_data, 20, 20, 99, NULL);
 
     gui_game_difficulty_button_create(
         master,
@@ -67,10 +68,13 @@ void gui_menu_multiplayer(gui_menu* menu){
     wifi_init(menu);
     Serial.println("Wifi initialized");
     if(wifi_device_type() == WIFI_DEVICE_SLAVE){
-        gui_game_difficulty_button_hide(menu->easy);
-        gui_game_difficulty_button_hide(menu->medium);
-        gui_game_difficulty_button_hide(menu->hard);
-        gui_menu_waiting_show(menu);
+        gui_menue_item_hide(menu->easy->button);
+        gui_menue_item_hide(menu->medium->button);
+        gui_menue_item_hide(menu->hard->button);
+
+        gui_menue_item_show(menu->waiting_label);
+       // this gui_menue_item_show(menu->back_button);
+        
 
     }
     if(wifi_device_type() == WIFI_DEVICE_MASTER){
@@ -83,24 +87,51 @@ void gui_menu_multiplayer(gui_menu* menu){
 void gui_menu_waiting_create(gui_menu* menue, lv_obj_t* parent){
     menue->waiting_label = lv_label_create(parent);
     lv_label_set_text(menue->waiting_label, "Waiting...");
-    gui_menu_waiting_hide(menue);
+    gui_menue_item_hide(menue->waiting_label);
+   // gui_menu_waiting_style_init(menue->waiting_label);
 }
 
-void gui_menu_waiting_show(gui_menu* menu){
-    lv_obj_clear_flag(menu->waiting_label, LV_OBJ_FLAG_HIDDEN);
+void gui_menu_waiting_style_init(lv_obj_t* waiting_label){
+
+    lv_obj_set_style_bg_opa(waiting_label, 255, 0);
+    lv_obj_set_style_text_color(waiting_label, lv_color_black(), 0);
+    lv_obj_set_style_text_font(waiting_label, &lv_font_montserrat_32, 0);
+    lv_obj_set_style_border_color(waiting_label, lv_color_black(), 0);
+    lv_obj_set_style_border_width(waiting_label, 7, 0);
+    lv_obj_set_style_text_align(waiting_label, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_set_style_pad_all(waiting_label, 15, 0);
+    lv_obj_set_style_bg_color(waiting_label, lv_color_make(240, 200, 8),0);
+    lv_obj_set_style_align(waiting_label, LV_ALIGN_CENTER, 0);
 }
 
-void gui_menu_waiting_hide(gui_menu* menu){
-    lv_obj_add_flag(menu->waiting_label, LV_OBJ_FLAG_HIDDEN);
+void gui_menue_item_show(lv_obj_t* object){
+    lv_obj_clear_flag(object, LV_OBJ_FLAG_HIDDEN);
+}
+void gui_menue_item_hide(lv_obj_t* object){
+    lv_obj_add_flag(object, LV_OBJ_FLAG_HIDDEN);
 }
 
-void gui_menu_show(gui_menu* menu){
-    lv_obj_clear_flag(menu->div, LV_OBJ_FLAG_HIDDEN);
+void gui_menue_create_back_button(gui_menu* menu, lv_obj_t* parent){
+    menu->back_button = lv_btn_create(parent);
+    lv_obj_t* label = lv_label_create(menu->back_button);
+    lv_label_set_text(label, "Back");
+    lv_obj_set_style_text_color(label, lv_color_black(), 0);
+    lv_obj_set_style_text_font(label, &lv_font_montserrat_32, 0);
+    lv_obj_set_style_bg_color(menu->back_button, lv_color_make(231, 115, 113),0);
+    lv_obj_set_style_align(menu->back_button, LV_ALIGN_TOP_LEFT, 0);
+    lv_obj_add_event_cb(menu->back_button, gui_menue_back_button_cb, LV_EVENT_ALL, menu);
+   // gui_menue_item_hide(menu->back_button);
 }
 
-void gui_menu_hide(gui_menu* menu){
-    lv_obj_add_flag(menu->div, LV_OBJ_FLAG_HIDDEN);
+void gui_menue_back_button_cb(lv_event_t * e){
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t* obj = lv_event_get_target(e);
+    gui_menu* menu = (gui_menu*)lv_event_get_user_data(e);
+    if(code == LV_EVENT_CLICKED){
+        gui_game_mode_menue_show(menu->mode_menu);
+    }
 }
+
 
 void gui_menu_slave_receive_difficulty(wifi_data data){
     Serial.printf("First: %d",data.menu->first);

@@ -16,7 +16,8 @@ struct gui_game_widget{
     gui_grid_widget* master_grid;
     gui_timer_widget* master_timer;
     gui_mine_counter_widget* master_counter;
-    gui_end_screen_widget* master_end_screen;
+    //gui_end_screen_widget* master_end_screen;
+    lv_obj_t* result;
     bool started = false;
     bool created = false;
     int online_mode;

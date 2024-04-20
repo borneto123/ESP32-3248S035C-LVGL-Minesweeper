@@ -63,7 +63,7 @@ void wifi_on_data_sent(const uint8_t *mac_addr, esp_now_send_status_t status){
 }
 
 void wifi_on_data_recv(const uint8_t * mac, const uint8_t *incomingData, int len){
-    
+   
    memcpy(&device.receive, incomingData, sizeof(device.receive));
    Serial.print("Bytes received: ");
    Serial.println(len);
@@ -87,7 +87,7 @@ void wifi_handle_new_data(){
 
 void wifi_send_data(){
     esp_err_t result = esp_now_send(device.peer_info.peer_addr, (uint8_t *) &device.send, sizeof(device.send));
-   
+    
   if (result == ESP_OK) {
     Serial.println("Sent with success");
   }
@@ -104,14 +104,19 @@ void wifi_send_test(){
 }
 
 void wifi_send_result_slave(logic_end_game_data logic_end_game_data){
+    Serial.println("----SLAVE:WIFI_PACKET_SLAVE_END");
+    Serial.printf("\nState: %d", logic_end_game_data.state);
+    Serial.println("\n------------------------------------");
     device.send.type = WIFI_PACKET_SLAVE_END;
     device.send.end_game_data = logic_end_game_data;
+    device.send.end_game_data.type = WIFI_PACKET_SLAVE_END;
     wifi_send_data();
 }
 
 void wifi_send_difficulty(logic_game_difficulty difficulty){
     device.send.type = WIFI_PACKET_DIFFICULTY;
     device.send.difficulty = difficulty;
+    device.send.end_game_data.type = WIFI_PACKET_DIFFICULTY;
     wifi_send_data();
 }
 

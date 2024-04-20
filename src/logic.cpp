@@ -32,6 +32,9 @@ void logic_create_logic_data(logic_data* game_data, int rows, int cols, int mine
     game_data->end_data_local.state = LOGIC_DATA_STATE_ON_GOING;
     game_data->end_data_packet.state = LOGIC_DATA_STATE_ON_GOING;
     
+    game_data->end_data_local.type = WIFI_PACKET_SLAVE_END;
+    game_data->end_data_packet.type = WIFI_PACKET_SLAVE_END;
+
     game_data->seed = seed;
     game_data->grid = logic_create_grid(rows, cols);
     game_data->rows = rows;
@@ -123,6 +126,7 @@ void logic_data_handle_end_screen(logic_data *game_data){
     
     
     Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(game_data));
+    Serial.printf("\nLocal packet type %d", game_data->end_data_local.type);
     if(game_data->end_data_local.type != WIFI_PACKET_FINALE_RESULT){
     game_data->end_data_local.score = logic_data_calculate_score(game_data);
     gui_timer_widget_stop(game_data->master->master_timer);
@@ -132,8 +136,8 @@ void logic_data_handle_end_screen(logic_data *game_data){
     }
     if(game_data->master->online_mode == 0){
     game_data->end_data_local.state = game_data->state;
-    gui_end_screen_widget_delete(game_data->master->master_end_screen);
-    gui_end_screen_widget_create(game_data->master->master_end_screen, game_data->end_data_local);
+    //gui_end_screen_widget_delete(game_data->master->master_end_screen);
+    gui_end_screen_widget_create(game_data->master, game_data->end_data_local);
     return;
     }
     if(game_data->master->online_mode == 1){
@@ -151,9 +155,9 @@ void logic_data_handle_end_screen(logic_data *game_data){
             }
         }
     }
-    gui_end_screen_widget_delete(game_data->master->master_end_screen);
+   // gui_end_screen_widget_delete(game_data->master->master_end_screen);
     Serial.println("Deleted");
-    gui_end_screen_widget_create(game_data->master->master_end_screen, game_data->end_data_local);
+    gui_end_screen_widget_create(game_data->master, game_data->end_data_local);
     Serial.println("Spawned");
 }
 

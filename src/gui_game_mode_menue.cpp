@@ -19,6 +19,7 @@ void gui_game_mode_menue_create(
     );
 
     mode_menu->difficulty_menue = difficulty_menue;
+    mode_menu->difficulty_menue->mode_menu = mode_menu;
 }
 
 void gui_game_mode_menue_create_div(gui_game_mode_menue* mode_menu, lv_obj_t* parent){
