@@ -31,7 +31,7 @@ void logic_create_logic_data(logic_data* game_data, int rows, int cols, int mine
     
     game_data->end_data_local.state = LOGIC_DATA_STATE_ON_GOING;
     game_data->end_data_packet.state = LOGIC_DATA_STATE_ON_GOING;
-
+    
     game_data->seed = seed;
     game_data->grid = logic_create_grid(rows, cols);
     game_data->rows = rows;
@@ -120,21 +120,24 @@ void logic_click_bomb_tile(int x, int y, logic_data *game_data) {
 }
 
 void logic_data_handle_end_screen(logic_data *game_data){
-    gui_end_screen_widget* end = new gui_end_screen_widget;
-    Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(game_data));
     
+    
+    Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(game_data));
+    if(game_data->end_data_local.type != WIFI_PACKET_FINALE_RESULT){
     game_data->end_data_local.score = logic_data_calculate_score(game_data);
     gui_timer_widget_stop(game_data->master->master_timer);
     game_data->end_data_local.time = game_data->master->master_timer->current_time;
     Serial.printf("\nOnline mode: %d\n",game_data->master->online_mode);
-    Serial.printf("\nGame state %d",game_data->end_data_packet.state);
+    Serial.printf("\nGame state %d",game_data->end_data_local.state);
+    }
     if(game_data->master->online_mode == 0){
     game_data->end_data_local.state = game_data->state;
-    gui_end_screen_widget_create(end, game_data->end_data_local);
+    gui_end_screen_widget_delete(game_data->master->master_end_screen);
+    gui_end_screen_widget_create(game_data->master->master_end_screen, game_data->end_data_local);
     return;
     }
     if(game_data->master->online_mode == 1){
-        if(game_data->end_data_packet.state != LOGIC_DATA_STATE_END)
+        if(game_data->end_data_packet.state != LOGIC_DATA_STATE_END && game_data->end_data_local.type != WIFI_PACKET_FINALE_RESULT)
         game_data->end_data_local.state = LOGIC_DATA_STATE_WAITING;
         if(wifi_device_type() == WIFI_DEVICE_SLAVE){
             wifi_send_result_slave(game_data->end_data_local);
@@ -148,7 +151,10 @@ void logic_data_handle_end_screen(logic_data *game_data){
             }
         }
     }
-    gui_end_screen_widget_create(end, game_data->end_data_local);
+    gui_end_screen_widget_delete(game_data->master->master_end_screen);
+    Serial.println("Deleted");
+    gui_end_screen_widget_create(game_data->master->master_end_screen, game_data->end_data_local);
+    Serial.println("Spawned");
 }
 
 
@@ -224,6 +230,7 @@ void logic_click_zero_tile(int x, int y, logic_data *game_data) {
 void logic_data_delete(logic_data *game_data){
 
     delete[] game_data->grid;
+    
 }
 
 void logic_data_set_game_widget(logic_data *game_data, gui_game_widget* master){
@@ -236,7 +243,7 @@ int logic_data_calculate_score(logic_data *game_data){
 
 
 
-void logic_data_slave_master_receive(wifi_data device){
+void logic_data_master_send_final(wifi_data device){
     Serial.println("Test");
     device.menu->master->master_grid_data->end_data_packet = device.receive.end_game_data;
     Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(device.menu->master->master_grid_data));
@@ -266,13 +273,13 @@ logic_end_game_data logic_data_generate_result_packet(logic_data *game_data){
             result.state = LOGIC_DATA_STATE_WON;
             game_data->end_data_local.state = LOGIC_DATA_STATE_LOST;
         }
-        else if(game_data->end_data_local.time>game_data->end_data_packet.time){
+        else if(game_data->end_data_local.time<game_data->end_data_packet.time){
             //This is data for slave
             result.state = LOGIC_DATA_STATE_LOST;
             game_data->end_data_local.state = LOGIC_DATA_STATE_WON;
         }
         
-        else if(game_data->end_data_local.time<game_data->end_data_packet.time){
+        else if(game_data->end_data_local.time>game_data->end_data_packet.time){
             //This is data for slave
             result.state = LOGIC_DATA_STATE_WON;
             game_data->end_data_local.state = LOGIC_DATA_STATE_LOST;
@@ -292,5 +299,15 @@ logic_end_game_data logic_data_generate_result_packet(logic_data *game_data){
 }
 
 
+void logic_data_handle_slave_receive_final(wifi_data device){
+    Serial.printf("\nHandle: ");
+
+    Serial.printf("\nState: %d ",device.receive.end_game_data.state);
+    Serial.printf("\nScore: %d ",device.receive.end_game_data.score);
+    Serial.printf("\nTime: %d \n",device.receive.end_game_data.time);
+
+    device.menu->master->master_grid_data->end_data_local = device.receive.end_game_data;
+    logic_data_handle_end_screen(device.menu->master->master_grid_data);
+}
+
 // Add function for slave to recive data and call function to spawn end screen
-// Think about a way to rmeove second endscreen once it is over

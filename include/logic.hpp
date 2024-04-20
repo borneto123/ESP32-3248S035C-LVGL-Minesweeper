@@ -167,12 +167,14 @@ void logic_data_set_game_widget(logic_data *game_data, gui_game_widget* master);
 
 int logic_data_calculate_score(logic_data *game_data);
 
-void logic_data_slave_master_receive(wifi_data device);
+void logic_data_master_send_final(wifi_data device);
 
 bool logic_data_can_generate_result_packet(logic_data *game_data);
 
 logic_end_game_data logic_data_generate_result_packet(logic_data *game_data);
 
 void logic_data_handle_end_screen(logic_data *game_data);
+
+void logic_data_handle_slave_receive_final(wifi_data device);
 
 #endif

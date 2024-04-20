@@ -15,6 +15,7 @@ struct gui_game_widget;
 struct gui_menu
 {
     int page = GUI_DIFFICULTY_MENUE_DEFAULT;
+    int first = 1;
     lv_obj_t* div;
     gui_game_difficulty_button* easy;
     gui_game_difficulty_button* medium;

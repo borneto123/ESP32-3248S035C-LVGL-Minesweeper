@@ -77,7 +77,11 @@ void wifi_handle_new_data(){
     }
     if(device.receive.type == WIFI_PACKET_SLAVE_END){
         Serial.println("Primljen slave result");
-        logic_data_slave_master_receive(device);
+        logic_data_master_send_final(device);
+    }
+    if(device.receive.type == WIFI_PACKET_FINALE_RESULT){
+        Serial.println("Primljen finale result");
+        logic_data_handle_slave_receive_final(device);
     }
 }
 
@@ -114,5 +118,6 @@ void wifi_send_difficulty(logic_game_difficulty difficulty){
 void wifi_send_result_finale(logic_end_game_data logic_end_game_data){
       device.send.type = WIFI_PACKET_FINALE_RESULT;
       device.send.end_game_data = logic_end_game_data;
+      device.send.end_game_data.type = WIFI_PACKET_FINALE_RESULT;
       wifi_send_data();
 }

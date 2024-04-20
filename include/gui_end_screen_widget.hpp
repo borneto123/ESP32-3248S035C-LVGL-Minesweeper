@@ -12,6 +12,8 @@ struct gui_end_screen_widget
 
 void gui_end_screen_widget_create(gui_end_screen_widget* screen, logic_end_game_data end_game_data);
 
+void gui_end_screen_widget_delete(gui_end_screen_widget* screen);
+
 
 
 

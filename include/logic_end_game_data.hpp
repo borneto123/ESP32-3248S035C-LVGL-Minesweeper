@@ -3,6 +3,7 @@
 
 
 struct logic_end_game_data{
+    int type;
     int state; 
     unsigned long int time;
     int score;

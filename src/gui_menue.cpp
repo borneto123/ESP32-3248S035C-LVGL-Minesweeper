@@ -103,5 +103,9 @@ void gui_menu_hide(gui_menu* menu){
 }
 
 void gui_menu_slave_receive_difficulty(wifi_data data){
+    Serial.printf("First: %d",data.menu->first);
+    if(data.menu->first == 0)
+    gui_game_widget_delete(data.menu->master);
     gui_game_widget_create(data.menu->master, data.receive.difficulty, lv_scr_act());
+    data.menu->first = 1;
 }

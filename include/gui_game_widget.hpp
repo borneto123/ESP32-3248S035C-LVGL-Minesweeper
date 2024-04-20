@@ -5,7 +5,7 @@
 #include <gui_mine_counter_widget.hpp>
 #include <logic.hpp>
 #include <logic_game_difficulty.hpp>
-
+#include <gui_end_screen_widget.hpp>
 struct gui_grid_widget;
 struct gui_mine_counter_widget;
 
@@ -16,6 +16,7 @@ struct gui_game_widget{
     gui_grid_widget* master_grid;
     gui_timer_widget* master_timer;
     gui_mine_counter_widget* master_counter;
+    gui_end_screen_widget* master_end_screen;
     bool started = false;
     bool created = false;
     int online_mode;

@@ -2,6 +2,7 @@
 #include <logic.hpp>
 #include <Arduino.h>
 void gui_end_screen_widget_create(gui_end_screen_widget* screen, logic_end_game_data end_game_data){
+    Serial.printf("\nEnd screen widget state : %d", end_game_data.state);
     char header[30];
     char message[70];
     if(end_game_data.state == LOGIC_DATA_STATE_LOST){
@@ -16,6 +17,9 @@ void gui_end_screen_widget_create(gui_end_screen_widget* screen, logic_end_game_
     else if(end_game_data.state == LOGIC_DATA_STATE_WAITING){
         sprintf(header, "WAITING FOR OTHER PLAYER");
     }
+    else{
+        sprintf(header, "ERROR");
+    } 
     sprintf(
             message,
             "Score: %d\nTime:%02lu:%02lu",
@@ -23,4 +27,11 @@ void gui_end_screen_widget_create(gui_end_screen_widget* screen, logic_end_game_
     screen->end_screen = lv_msgbox_create(NULL,header,message, NULL, true);
     lv_obj_set_style_align(screen->end_screen, LV_ALIGN_CENTER, 0);
     
+}
+
+void gui_end_screen_widget_delete(gui_end_screen_widget* screen){
+    
+    if(lv_obj_is_valid(screen->end_screen)){
+        lv_msgbox_close(screen->end_screen);
+    }
 }
