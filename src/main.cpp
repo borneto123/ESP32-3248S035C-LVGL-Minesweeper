@@ -27,7 +27,7 @@ void setup()
 bool send = false;
 void loop()
 {
-	 lv_timer_handler();
+	 
 	if(test.started){ 
 		gui_timer_widget_refresh(test.master_timer);
 		gui_mine_counter_widget_refresh(test.master_counter, test.master_grid_data);
@@ -35,6 +35,8 @@ void loop()
 	
 	}
 	
-		
+	
+	lv_timer_handler(); /*/*Process timers, events, animations, display refreshed, and input devices*/
+	
 	delay( 10 );
 }

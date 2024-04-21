@@ -6,6 +6,7 @@
 struct gui_end_screen_widget
 {
     lv_obj_t* end_screen;
+    
 };
 
 

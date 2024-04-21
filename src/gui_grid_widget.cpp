@@ -39,27 +39,37 @@ void gui_create_grid_widget_matrix(gui_grid_widget* grid, int rows, int cols, lo
     grid->matrix = lv_btnmatrix_create(grid->div);
     lv_obj_set_size(grid->matrix, cols * GRID_TILE_WIDTH, rows * GRID_TILE_HEIGHT);
     lv_btnmatrix_set_map(grid->matrix, (const char**)grid->display_values);
-    static lv_style_t style_bg;
-    lv_style_init(&style_bg);
-    lv_style_set_pad_all(&style_bg, 0);
-    lv_style_set_pad_gap(&style_bg, 0);
-    lv_style_set_border_width(&style_bg, 0);
-    lv_style_set_radius(&style_bg, 0);
-    //Try to free this memory later
+    
+    static lv_style_t style_main;
+    static lv_style_t style_items;
+    static int created = 0;
+    if(!created){
+    lv_style_init(&style_main);
+    lv_style_set_pad_all(&style_main, 0);
+    lv_style_set_pad_gap(&style_main, 0);
+    lv_style_set_border_width(&style_main, 0);
+    lv_style_set_radius(&style_main, 0);
+    }
+    lv_obj_add_style(grid->matrix, &style_main, 0);
     cbData->game_data = game_data;
     cbData->grid = grid;
-    lv_obj_add_style(grid->matrix, &style_bg, 0);
-    lv_obj_set_style_radius(grid->matrix, 0 ,LV_PART_ITEMS );
-    lv_obj_set_style_border_width(grid->matrix, 1, LV_PART_ITEMS);
-    lv_obj_set_style_text_font(grid->matrix,&minesweeper_font, LV_PART_ITEMS);
-    lv_obj_set_style_bg_color(grid->matrix, lv_color_make(150, 150, 150), LV_PART_ITEMS);
+    if(!created){
+    lv_style_init(&style_items);
+    lv_style_set_radius(&style_items, 0);
+    lv_style_set_border_width(&style_items, 1);
+    lv_style_set_text_font(&style_items,&minesweeper_font);
+    lv_style_set_bg_color(&style_items, lv_color_make(150, 150, 150));
+    }
     lv_obj_add_event_cb(grid->matrix, gui_matrix_callback, LV_EVENT_ALL, cbData);
+    lv_obj_add_style(grid->matrix, &style_items, LV_PART_ITEMS);
+    created = 1;
 }
 
 void gui_matrix_callback(lv_event_t* e) {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t* obj = lv_event_get_target(e);
     gui_data_matrix_callback* cbData = (gui_data_matrix_callback*)lv_event_get_user_data(e);
+    
     if (code == LV_EVENT_SHORT_CLICKED) {
         uint32_t id = lv_btnmatrix_get_selected_btn(obj);
         if (id <= cbData->game_data->cols * cbData->game_data->rows) {

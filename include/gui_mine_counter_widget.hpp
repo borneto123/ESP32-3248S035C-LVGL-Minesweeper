@@ -23,9 +23,7 @@ void gui_mine_counter_widget_create_label(gui_mine_counter_widget* counter, lv_o
 
 void gui_mine_counter_widget_refresh(gui_mine_counter_widget* counter,  logic_data* game_data);
 
-static lv_style_t gui_style_mine_counter_widget;
-
-void gui_mine_counter_style_init();
+void gui_mine_counter_style_init(lv_obj_t* counter);
 
 void gui_mine_counter_widget_delete(gui_mine_counter_widget* counter);
 #endif

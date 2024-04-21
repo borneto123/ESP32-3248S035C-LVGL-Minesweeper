@@ -3,7 +3,7 @@ void gui_menu_create(gui_menu* menue,gui_game_widget* master, lv_obj_t* parent){
     
     gui_menue_create_div(menue, parent);
     gui_menu_waiting_create(menue, parent);
-    //gui_menue_create_back_button(menue, parent); THIS
+    gui_menue_create_back_button(menue, parent); 
     menue->online_mode = -1;
     menue->easy = new gui_game_difficulty_button;
     menue->medium = new gui_game_difficulty_button;
@@ -59,12 +59,20 @@ void gui_menue_create_div(gui_menu* menue, lv_obj_t* parent){
 
 
 void gui_menu_singleplayer(gui_menu* menu){
+    Serial.println("Singleplayer started");
     menu->online_mode = 0;
     menu->master->online_mode = 0;
+    gui_menue_item_show(menu->easy->button);
+    gui_menue_item_show(menu->medium->button);
+    gui_menue_item_show(menu->hard->button);
+    gui_menue_item_hide(menu->waiting_label);
+    gui_menue_item_show(menu->back_button);
 }
 void gui_menu_multiplayer(gui_menu* menu){
+    Serial.println("Multiplayer started");
     menu->online_mode = 1;
     menu->master->online_mode = 1;
+
     wifi_init(menu);
     Serial.println("Wifi initialized");
     if(wifi_device_type() == WIFI_DEVICE_SLAVE){
@@ -73,7 +81,7 @@ void gui_menu_multiplayer(gui_menu* menu){
         gui_menue_item_hide(menu->hard->button);
 
         gui_menue_item_show(menu->waiting_label);
-       // this gui_menue_item_show(menu->back_button);
+        gui_menue_item_show(menu->back_button);
         
 
     }
@@ -88,20 +96,27 @@ void gui_menu_waiting_create(gui_menu* menue, lv_obj_t* parent){
     menue->waiting_label = lv_label_create(parent);
     lv_label_set_text(menue->waiting_label, "Waiting...");
     gui_menue_item_hide(menue->waiting_label);
-   // gui_menu_waiting_style_init(menue->waiting_label);
+   gui_menu_waiting_style_init(menue->waiting_label);
 }
 
 void gui_menu_waiting_style_init(lv_obj_t* waiting_label){
 
-    lv_obj_set_style_bg_opa(waiting_label, 255, 0);
-    lv_obj_set_style_text_color(waiting_label, lv_color_black(), 0);
-    lv_obj_set_style_text_font(waiting_label, &lv_font_montserrat_32, 0);
-    lv_obj_set_style_border_color(waiting_label, lv_color_black(), 0);
-    lv_obj_set_style_border_width(waiting_label, 7, 0);
-    lv_obj_set_style_text_align(waiting_label, LV_TEXT_ALIGN_CENTER, 0);
-    lv_obj_set_style_pad_all(waiting_label, 15, 0);
-    lv_obj_set_style_bg_color(waiting_label, lv_color_make(240, 200, 8),0);
-    lv_obj_set_style_align(waiting_label, LV_ALIGN_CENTER, 0);
+    static lv_style_t style;
+    static int created = 0;
+    if(!created){
+    lv_style_init(&style);    
+    lv_style_set_bg_opa(&style, 255);
+    lv_style_set_text_color(&style, lv_color_black());
+    lv_style_set_text_font(&style, &lv_font_montserrat_32);
+    lv_style_set_border_color(&style, lv_color_black());
+    lv_style_set_border_width(&style, 7);
+    lv_style_set_text_align(&style, LV_TEXT_ALIGN_CENTER);
+    lv_style_set_pad_all(&style, 15);
+    lv_style_set_bg_color(&style, lv_color_make(240, 200, 8));
+    lv_style_set_align(&style, LV_ALIGN_CENTER);
+}
+    lv_obj_add_style(waiting_label, &style, 0);
+    created = 1;
 }
 
 void gui_menue_item_show(lv_obj_t* object){
@@ -114,13 +129,21 @@ void gui_menue_item_hide(lv_obj_t* object){
 void gui_menue_create_back_button(gui_menu* menu, lv_obj_t* parent){
     menu->back_button = lv_btn_create(parent);
     lv_obj_t* label = lv_label_create(menu->back_button);
+
+    static lv_style_t style;
+    static int created = 0;
     lv_label_set_text(label, "Back");
-    lv_obj_set_style_text_color(label, lv_color_black(), 0);
-    lv_obj_set_style_text_font(label, &lv_font_montserrat_32, 0);
-    lv_obj_set_style_bg_color(menu->back_button, lv_color_make(231, 115, 113),0);
-    lv_obj_set_style_align(menu->back_button, LV_ALIGN_TOP_LEFT, 0);
-    lv_obj_add_event_cb(menu->back_button, gui_menue_back_button_cb, LV_EVENT_ALL, menu);
+    if(!created){
+    lv_style_init(&style);
+    lv_style_set_text_color(&style, lv_color_black());
+    lv_style_set_text_font(&style, &lv_font_montserrat_32);
+    lv_style_set_bg_color(&style, lv_color_make(231, 115, 113));
+    lv_style_set_align(&style, LV_ALIGN_TOP_LEFT);
+    lv_obj_add_style(menu->back_button, &style, 0);
+    }
    // gui_menue_item_hide(menu->back_button);
+   lv_obj_add_event_cb(menu->back_button, gui_menue_back_button_cb, LV_EVENT_ALL, menu);
+   created = 1;
 }
 
 void gui_menue_back_button_cb(lv_event_t * e){

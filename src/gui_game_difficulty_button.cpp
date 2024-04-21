@@ -27,6 +27,7 @@ void gui_game_difficulty_button_cb(lv_event_t * e){
     gui_game_difficulty_button* difficulty = (gui_game_difficulty_button*)lv_event_get_user_data(e);
     if(code == LV_EVENT_CLICKED){
        // lv_obj_del(obj);
+       Serial.printf("\nGame difficulty button: %d", difficulty->online_mode);
         if(difficulty->online_mode == 1 && wifi_device_type() == WIFI_DEVICE_MASTER){
             //Add online mode logic
             Serial.println("Sending data");

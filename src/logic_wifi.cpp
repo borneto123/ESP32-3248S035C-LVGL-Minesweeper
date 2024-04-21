@@ -46,7 +46,8 @@ void wifi_init(gui_menu* menu){
 
     do{
       Serial.println("Adding peer failed");
-    }while(esp_now_add_peer(&device.peer_info) != ESP_OK);
+      esp_now_add_peer(&device.peer_info);
+    }while( !esp_now_is_peer_exist(mac[peer_type]));
     Serial.println("Added peer");
     esp_now_register_recv_cb(wifi_on_data_recv);
 }
