@@ -61,7 +61,9 @@ void gui_menue_create_div(gui_menu* menue, lv_obj_t* parent){
 void gui_menu_singleplayer(gui_menu* menu){
     Serial.println("Singleplayer started");
     menu->online_mode = 0;
-    menu->master->online_mode = 0;
+    gui_game_difficulty_singleplayer(menu->easy);
+    gui_game_difficulty_singleplayer(menu->medium);
+    gui_game_difficulty_singleplayer(menu->hard);
     gui_menue_item_show(menu->easy->button);
     gui_menue_item_show(menu->medium->button);
     gui_menue_item_show(menu->hard->button);
