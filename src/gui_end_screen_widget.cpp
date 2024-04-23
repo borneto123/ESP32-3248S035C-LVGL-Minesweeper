@@ -23,11 +23,10 @@ void gui_end_screen_widget_create(gui_game_widget* master, logic_end_game_data e
             message,
             "Score: %d\nTime:%02lu:%02lu",
             end_game_data.score, (end_game_data.time/1000)/60,(end_game_data.time/1000)%60);
-    if(lv_obj_is_valid(master->result)){
-        Serial.println("\nDeleting object");
-        lv_obj_del(master->result);
+    if(!lv_obj_is_valid(master->result)){
+        master->result = lv_label_create(master->div);
     }
-    master->result = lv_label_create(master->div);
+    
     
     lv_label_set_text_fmt(master->result, "%s\n%s",header,message);
     gui_end_screen_widget_set_style(master->result, end_game_data.state);

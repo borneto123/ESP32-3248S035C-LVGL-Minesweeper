@@ -29,6 +29,7 @@ struct gui_menu
     lv_obj_t* back_button;
     int online_mode;
     lv_obj_t* waiting_label;
+    lv_obj_t* header;
 
     
 };
@@ -51,6 +52,9 @@ void gui_menu_multiplayer(gui_menu* menu);
 
 
 void gui_menu_waiting_create(gui_menu* menue, lv_obj_t* parent);
+
+void gui_menu_header_create(gui_menu* menue, lv_obj_t* parent);
+void gui_menu_header_style_init(lv_obj_t* header);
 
 void gui_menu_waiting_style_init(lv_obj_t* waiting_label);
 

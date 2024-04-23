@@ -25,7 +25,7 @@ void gui_game_mode_menue_create(
 void gui_game_mode_menue_create_div(gui_game_mode_menue* mode_menu, lv_obj_t* parent){
     mode_menu->div = lv_obj_create(parent);
     
-    
+    lv_obj_set_style_text_font(mode_menu->div, &lv_font_montserrat_32, 0);
     lv_obj_set_style_opa(mode_menu->div,255,0);
     lv_obj_set_size(mode_menu->div, 320, 480);
     lv_obj_set_style_border_width(mode_menu->div, 0, 0);
@@ -45,7 +45,7 @@ void gui_game_mode_menue_create_singleplayer_button(
     lv_label_set_text_fmt(label, "Singleplayer");
     lv_obj_set_style_bg_color(mode_menu->singleplayer_button, color_bg, 0);
     lv_obj_set_style_text_color(mode_menu->singleplayer_button, color_text, 0);
-    lv_obj_align(mode_menu->singleplayer_button, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align(mode_menu->singleplayer_button, LV_ALIGN_CENTER, 0, -50);
     //Add cb
     lv_obj_add_event_cb(
         mode_menu->singleplayer_button,

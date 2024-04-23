@@ -72,6 +72,7 @@ void wifi_on_data_recv(const uint8_t * mac, const uint8_t *incomingData, int len
 }
 
 void wifi_handle_new_data(){
+  if(device.menu->online_mode){
     if(device.receive.type == WIFI_PACKET_DIFFICULTY){
         Serial.println("Primljen difficulty");
         gui_menu_slave_receive_difficulty(device);
@@ -84,6 +85,7 @@ void wifi_handle_new_data(){
         Serial.println("Primljen finale result");
         logic_data_handle_slave_receive_final(device);
     }
+  }
 }
 
 void wifi_send_data(){
