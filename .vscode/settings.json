@@ -49,5 +49,43 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "queue": "cpp"
-    }
+    },
+    "C_Cpp.doxygen.generatedStyle": "/**",
+    "grammarly.selectors": [
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/debug.hpp"
+        },
+        {
+            "language": "Log",
+            "scheme": "output",
+            "pattern": "extension-output-znck.grammarly-#2-Grammarly"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "src/debug.cpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/gui_end_screen_widget.hpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/logic_game_difficulty.hpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/gui_game_difficulty_button.hpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "src/gui_game_difficulty_button.cpp"
+        }
+    ]
 }

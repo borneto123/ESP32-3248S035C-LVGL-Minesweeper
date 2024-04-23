@@ -138,7 +138,7 @@ void logic_data_handle_end_screen(logic_data *game_data){
     }
     if(game_data->master->online_mode == 0){
     game_data->end_data_local.state = game_data->state;
-    //gui_end_screen_widget_delete(game_data->master->master_end_screen);
+    
     gui_end_screen_widget_create(game_data->master, game_data->end_data_local);
     return;
     }
@@ -157,7 +157,7 @@ void logic_data_handle_end_screen(logic_data *game_data){
             }
         }
     }
-   // gui_end_screen_widget_delete(game_data->master->master_end_screen);
+   
     Serial.println("Deleted");
     gui_end_screen_widget_create(game_data->master, game_data->end_data_local);
     Serial.println("Spawned");

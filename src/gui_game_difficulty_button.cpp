@@ -2,14 +2,29 @@
 #include <Arduino.h>
 #include <logic_wifi.hpp>
 
-void gui_game_difficulty_button_create(gui_game_widget* master, gui_game_difficulty_button* difficulty,logic_game_difficulty* settings, const char* name, lv_color_t color_bg, lv_color_t color_text, lv_obj_t* parent){
+void gui_game_difficulty_button_create(
+    gui_game_widget* master, 
+    gui_game_difficulty_button* difficulty,
+    logic_game_difficulty* settings, 
+    const char* name,
+    lv_color_t color_bg,
+    lv_color_t color_text,
+    lv_obj_t* parent
+) {
+
     difficulty->settings = settings;
     difficulty->master = master;
     gui_game_difficulty_button_create_button(difficulty, name, color_bg, color_text, parent);
     
 }
 
-void gui_game_difficulty_button_create_button(gui_game_difficulty_button* difficulty, const char* name, lv_color_t color_bg, lv_color_t color_text, lv_obj_t* parent){
+void gui_game_difficulty_button_create_button(
+    gui_game_difficulty_button* difficulty, 
+    const char* name, 
+    lv_color_t color_bg, 
+    lv_color_t color_text,
+    lv_obj_t* parent
+) {
 
     difficulty->button = lv_btn_create(parent);
     
@@ -26,27 +41,20 @@ void gui_game_difficulty_button_cb(lv_event_t * e){
     lv_obj_t* obj = lv_event_get_target(e);
     gui_game_difficulty_button* difficulty = (gui_game_difficulty_button*)lv_event_get_user_data(e);
     if(code == LV_EVENT_CLICKED){
-       // lv_obj_del(obj);
-       Serial.printf("\nGame difficulty button: %d", difficulty->online_mode);
         if(difficulty->online_mode == 1 && wifi_device_type() == WIFI_DEVICE_MASTER){
-            //Add online mode logic
-            Serial.println("Sending data");
-            
             difficulty->settings->seed = millis();
             wifi_send_difficulty(*difficulty->settings);
             gui_game_widget_multiplayer(difficulty->master);
         }
         else if(difficulty->online_mode == 0){
             gui_game_widget_singleplayer(difficulty->master);
-            Serial.println("Offline");
         }
         gui_game_widget_create(difficulty->master, *difficulty->settings, lv_scr_act());
     }       
 }
+
 void gui_game_difficulty_button_set_position(gui_game_difficulty_button* difficulty, int x, int y){
-
     lv_obj_set_pos(difficulty->button, x, y);
-
 }
 
 void gui_game_difficulty_button_show(gui_game_difficulty_button* difficulty){

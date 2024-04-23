@@ -4,7 +4,7 @@
 #include <lvgl.h>
 #include <gui_game_difficulty_button.hpp>
 #include <logic_wifi.hpp>
-#include <gui_game_mode_menue.hpp>
+#include <gui_game_mode_menu.hpp>
 enum gui_difficulty_menue_constants{
     GUI_DIFFICULTY_MENUE_DEFAULT,
     GUI_DIFFICULTY_MENUE_CUSTOM,
@@ -13,7 +13,7 @@ enum gui_difficulty_menue_constants{
 struct wifi_data;
 struct gui_game_difficulty_button;
 struct gui_game_widget;
-struct gui_game_mode_menue;
+struct gui_game_mode_menu;
 
 struct gui_menu
 {
@@ -24,7 +24,7 @@ struct gui_menu
     gui_game_difficulty_button* medium;
     gui_game_difficulty_button* hard;
     gui_game_difficulty_button* custom;
-    gui_game_mode_menue* mode_menu;
+    gui_game_mode_menu* mode_menu;
     gui_game_widget* master;
     lv_obj_t* back_button;
     int online_mode;

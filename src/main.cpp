@@ -9,16 +9,16 @@
 #include <gui_game_difficulty_button.hpp>
 #include <gui_menue.hpp>
 #include <logic_wifi.hpp>
-#include <gui_game_mode_menue.hpp>
+#include <gui_game_mode_menu.hpp>
 gui_menu testMenue;
 gui_game_widget test;
-gui_game_mode_menue test_mode;
+gui_game_mode_menu test_mode;
 void setup()
 { 
 	
 	lvgl_master_init();
 	gui_menu_create(&testMenue, &test, lv_scr_act());
-	gui_game_mode_menue_create(&test_mode, lv_scr_act(), &testMenue);
+	gui_game_mode_menu_create(&test_mode, lv_scr_act(), &testMenue);
 	Serial.begin(115200);
 	WiFi.mode(WIFI_MODE_STA);
 	//wifi_init(&testMenue);
