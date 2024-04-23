@@ -28,12 +28,20 @@ void gui_game_widget_create(gui_game_widget* master, logic_game_difficulty diffi
     master->created = true;
 
     logic_data_set_game_widget(master->master_grid_data, master);
+
+    
 }
 
 void gui_game_widget_create_div(gui_game_widget* master, logic_game_difficulty difficulty, lv_obj_t* parent){
     master->div = lv_obj_create(parent);
-    lv_obj_remove_style_all(master->div);
+
+
     lv_obj_set_size(master->div, 320, 480);
+    lv_obj_set_style_border_width(master->div, 0, 0);
+    lv_obj_set_style_radius(master->div, 0, 0);
+    lv_obj_set_style_bg_color(master->div, lv_color_white(), 0);
+    lv_obj_set_style_pad_all(master->div, 0 ,0);
+
 }
 void gui_game_widget_delete(gui_game_widget* master){
     Serial.println("\nBrisem sve iz game widget");
@@ -62,7 +70,9 @@ void gui_game_widget_create_button(
     lv_obj_t* label = lv_label_create(master->back_button);
     lv_label_set_text(label, LV_SYMBOL_CLOSE);
     lv_obj_align(master->back_button, LV_ALIGN_TOP_MID,0,0);
+    lv_obj_set_style_bg_color(master->back_button, lv_color_make(196, 40, 35), 0);
     lv_obj_add_event_cb(master->back_button, gui_game_widget_button_cb, LV_EVENT_ALL, master);
+
 }
 
 void gui_game_widget_button_cb(lv_event_t* e){

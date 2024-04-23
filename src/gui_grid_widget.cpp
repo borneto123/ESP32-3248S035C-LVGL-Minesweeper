@@ -31,8 +31,12 @@ void gui_create_grid_widget_display_values(gui_grid_widget* grid, int rows, int 
             sprintf(grid->display_values[i], "\n");
         else
             sprintf(grid->display_values[i], "  ");
+        
     }
     grid->display_values[mapSize - 1] = NULL;
+    Serial.println();
+    //----------------------------------------------
+    
 }
 
 void gui_create_grid_widget_matrix(gui_grid_widget* grid, int rows, int cols, logic_data* game_data) {
@@ -49,7 +53,12 @@ void gui_create_grid_widget_matrix(gui_grid_widget* grid, int rows, int cols, lo
     lv_style_set_pad_gap(&style_main, 0);
     lv_style_set_border_width(&style_main, 0);
     lv_style_set_radius(&style_main, 0);
+    
     }
+    if(cols <= 7) lv_style_set_align(&style_main, LV_ALIGN_CENTER);
+    else lv_style_set_align(&style_main, LV_ALIGN_TOP_LEFT);
+
+
     lv_obj_add_style(grid->matrix, &style_main, 0);
     cbData->game_data = game_data;
     cbData->grid = grid;
@@ -140,13 +149,14 @@ void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data) {
     int i_data = 0;
     int j_data = 0;
     const int columns = cb_data->grid->cols;
-    const int rows = cb_data->game_data->cols;
+    const int rows = cb_data->game_data->rows;
     int size = columns * rows + rows;
     for (int i = 0; i < size - 1; i++) {
         if ((i + 1) % (columns + 1) == 0) {
             i_data++;
             j_data = 0;
             continue;
+            
         } 
         else if (cb_data->game_data->grid[i_data][j_data].display == TILE_DISPLAY_SHOWN) {
             sprintf(cb_data->grid->display_values[i], "%d", cb_data->game_data->grid[i_data][j_data].value);

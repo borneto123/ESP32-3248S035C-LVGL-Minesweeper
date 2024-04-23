@@ -105,7 +105,9 @@ void logic_click_tile_main(int x, int y, logic_data *game_data) {
             logic_click_non_zero_tile(x, y, game_data);
         }
     }
-    //debug_print_grid_display(*game_data);1
+    debug_print_grid_display(*game_data);
+    Serial.println("\n-------------------");
+    debug_print_grid_value(*game_data);
     test_hidden_tiles(*game_data);
     if(game_data->hidden_tiles == 0){
         game_data->state = LOGIC_DATA_STATE_WON;

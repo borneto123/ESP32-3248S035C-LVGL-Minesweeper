@@ -28,7 +28,10 @@ void gui_game_mode_menue_create_div(gui_game_mode_menue* mode_menu, lv_obj_t* pa
     
     lv_obj_set_style_opa(mode_menu->div,255,0);
     lv_obj_set_size(mode_menu->div, 320, 480);
+    lv_obj_set_style_border_width(mode_menu->div, 0, 0);
+    lv_obj_set_style_radius(mode_menu->div, 0, 0);
     lv_obj_set_style_bg_color(mode_menu->div, lv_color_make(247,197,102), 0);
+    
 }
 
 void gui_game_mode_menue_create_singleplayer_button(
@@ -78,7 +81,8 @@ void gui_game_mode_menue_create_multiplayer_button(
 
 void gui_game_mode_menue_create_header(gui_game_mode_menue* mode_menu, lv_obj_t* parent){
     mode_menu->header = lv_label_create(mode_menu->div);
-    lv_label_set_text_fmt(mode_menu->header, "SELECT GAME MODE");
+    lv_label_set_text_fmt(mode_menu->header, "MINESWEEPER");
+    lv_obj_set_style_text_font(mode_menu->header, &lv_font_montserrat_32, 0);
     lv_obj_align(mode_menu->header, LV_ALIGN_TOP_MID, 0, 50);
 }
 

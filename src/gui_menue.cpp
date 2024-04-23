@@ -13,9 +13,9 @@ void gui_menu_create(gui_menu* menue,gui_game_widget* master, lv_obj_t* parent){
     logic_game_difficulty* medium_data = new logic_game_difficulty;
     logic_game_difficulty* hard_data = new logic_game_difficulty;
 
-    logic_game_difficulty_create(easy_data, 9, 9, 10, NULL);
-    logic_game_difficulty_create(medium_data, 14, 14, 40, NULL);
-    logic_game_difficulty_create(hard_data, 20, 20, 99, NULL);
+    logic_game_difficulty_create(easy_data, 9, 7, 10, NULL);
+    logic_game_difficulty_create(medium_data, 10, 10, 20, NULL);
+    logic_game_difficulty_create(hard_data, 14, 14, 40, NULL);
 
     gui_game_difficulty_button_create(
         master,

@@ -3,6 +3,7 @@
 void gui_mine_counter_widget_create(gui_mine_counter_widget* counter, logic_data* game_data, lv_obj_t* parent){
     gui_mine_counter_widget_create_div(counter, parent);
     gui_mine_counter_widget_create_label(counter, counter->div);
+    
 }
 
 
