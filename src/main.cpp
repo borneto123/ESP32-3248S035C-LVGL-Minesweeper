@@ -32,7 +32,8 @@ void loop()
 		gui_timer_widget_refresh(test.master_timer);
 		gui_mine_counter_widget_refresh(test.master_counter, test.master_grid_data);
 		
-	
+		if(test.multiplayer_map_num == 1)
+		lv_obj_invalidate(test.master_grid->matrix);
 	}
 	
 	

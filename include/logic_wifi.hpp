@@ -7,6 +7,7 @@
 #include <logic_game_difficulty.hpp>
 #include <gui_menu.hpp>
 #include <logic_end_game_data.hpp>
+#include <help.hpp>
 struct gui_menu;
 struct logic_data;
 
@@ -20,6 +21,7 @@ enum wifi_packet_type{
     WIFI_PACKET_DIFFICULTY,
     WIFI_PACKET_SLAVE_END,
     WIFI_PACKET_FINALE_RESULT,
+    WIFI_PACKET_SHORT_CLICK,
 };
 // Mac addresses of devices
 extern uint8_t mac[2][6];
@@ -30,12 +32,14 @@ extern String mac_str[2];
  * - `type` type of packet
  * - `difficulty` value of difficulty
  * - `end_game_data` value of end game_data
+ * - `cords` coordinates
  * - `test` variable used for test
  */
 struct wifi_packet{
     uint8_t type; 
     logic_game_difficulty difficulty;
     logic_end_game_data end_game_data;
+    cords c;
     int test;
 };
 
@@ -119,4 +123,7 @@ void wifi_send_result_slave(logic_end_game_data logic_end_game_data);
  * @brief Function that final result to slave
  */
 void wifi_send_result_finale(logic_end_game_data logic_end_game_data);
+
+
+void wifi_send_click_short(cords cords);
 #endif 

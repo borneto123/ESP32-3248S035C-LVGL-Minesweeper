@@ -64,7 +64,7 @@ void gui_menu_create_div(gui_menu* menu, lv_obj_t* parent){
 
 void gui_menu_singleplayer(gui_menu* menu){
     menu->online_mode = 0;
-
+    menu->multiplayer_map_num = 0;
     gui_game_difficulty_singleplayer(menu->easy);
     gui_game_difficulty_singleplayer(menu->medium);
     gui_game_difficulty_singleplayer(menu->hard);
@@ -76,10 +76,11 @@ void gui_menu_singleplayer(gui_menu* menu){
     gui_menu_item_show(menu->back_button);
     gui_menu_item_show(menu->header);
 }
-void gui_menu_multiplayer(gui_menu* menu){
+void gui_menu_multiplayer(gui_menu* menu, int map_num){
     menu->online_mode = 1;
     menu->master->online_mode = 1;
-
+    menu->multiplayer_map_num = map_num;
+    Serial.printf("Menu map type: %d|", map_num);
     wifi_init(menu);
 
     if(wifi_device_type() == WIFI_DEVICE_SLAVE){
@@ -92,9 +93,9 @@ void gui_menu_multiplayer(gui_menu* menu){
         gui_menu_item_show(menu->back_button);
     }
     if(wifi_device_type() == WIFI_DEVICE_MASTER){
-        gui_game_difficulty_multiplayer(menu->easy);
-        gui_game_difficulty_multiplayer(menu->medium);
-        gui_game_difficulty_multiplayer(menu->hard);
+        gui_game_difficulty_multiplayer(menu->easy, map_num);
+        gui_game_difficulty_multiplayer(menu->medium, map_num);
+        gui_game_difficulty_multiplayer(menu->hard, map_num);
         gui_menu_item_show(menu->header);
     }
 }
@@ -194,11 +195,13 @@ void gui_menu_back_button_cb(lv_event_t * e){
     if(code == LV_EVENT_CLICKED){
         gui_game_mode_menu_show(menu->mode_menu);
         menu->online_mode = false;
+       // menu->multiplayer_map_num = 0;
     }
 }
 
 
 void gui_menu_slave_receive_difficulty(wifi_data data){
+    gui_game_widget_multiplayer(data.menu->master, data.menu->multiplayer_map_num);
     if(data.menu->first == 0)
     gui_game_widget_delete(data.menu->master);
 

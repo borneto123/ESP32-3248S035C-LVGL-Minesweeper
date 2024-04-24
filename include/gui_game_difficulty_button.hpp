@@ -20,6 +20,7 @@ struct gui_game_difficulty_button {
     gui_game_widget* master;
     lv_obj_t* button;
     int online_mode;
+    int multiplayer_map_num;
 };
 
 /**
@@ -98,6 +99,6 @@ void gui_game_difficulty_singleplayer(gui_game_difficulty_button* difficulty);
  * @brief Function that sets online_mode of game difficulty button to `1`
  * @param difficulty pointer to gui_game_difficulty_button
  */
-void gui_game_difficulty_multiplayer(gui_game_difficulty_button* difficulty);
+void gui_game_difficulty_multiplayer(gui_game_difficulty_button* difficulty, int map_num);
 
 #endif

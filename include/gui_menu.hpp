@@ -22,6 +22,7 @@ struct gui_game_mode_menu;
  * - `back_button` back button for game_mode_menu
  * - `waiting_label` label that is used for the slave device while waiting for the game packet
  * - `online_mode` `0` Singleplayer `1` Multiplayer
+ * - `multiplayer_map_num` used to determine the type of multiplayer
  * - `first` used by slave when multiple games are played
  */
 struct gui_menu
@@ -36,9 +37,9 @@ struct gui_menu
     lv_obj_t* waiting_label;
     lv_obj_t* header;
     int online_mode;
+    int multiplayer_map_num;
     int first = 1;
 
-    
 };
 
 /**
@@ -90,7 +91,7 @@ void gui_menu_singleplayer(gui_menu* menu);
  * @brief Function that sets the online_mode to 1
  * @param master pointer to gui_game_widget
  */
-void gui_menu_multiplayer(gui_menu* menu);
+void gui_menu_multiplayer(gui_menu* menu, int map_num);
 
 /**
  * @brief Function that creates the waiting label

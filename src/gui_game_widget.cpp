@@ -35,18 +35,28 @@ void gui_game_widget_create_div(gui_game_widget* master, logic_game_difficulty d
 
 }
 void gui_game_widget_delete(gui_game_widget* master){
+    Serial.println(1);
     gui_timer_widget_delete(master->master_timer);
+    Serial.println(2);
     gui_mine_counter_widget_delete(master->master_counter);
+    Serial.println(3);
     gui_grid_widget_delete(master->master_grid);
+    Serial.println(4);
     logic_data_delete(master->master_grid_data);
+    Serial.println(5);
 
     delete master->master_timer;
+    Serial.println(6);
     delete master->master_counter;
+    Serial.println(7);
     delete master->master_grid;
+    Serial.println(8);
     delete master->master_grid_data;
-
-    lv_obj_del(master->div);
-
+    Serial.println(9);
+    
+    if(lv_obj_is_valid(master->div))
+        lv_obj_del(master->div);
+    Serial.println(10);
     master->started = false;
     
 }
@@ -75,8 +85,11 @@ void gui_game_widget_button_cb(lv_event_t* e) {
 
 void gui_game_widget_singleplayer(gui_game_widget* master){
     master->online_mode = 0;
+    master->multiplayer_map_num = 0;
 }
 
-void gui_game_widget_multiplayer(gui_game_widget* master){
+void gui_game_widget_multiplayer(gui_game_widget* master, int map_num){
     master->online_mode = 1;
+    master->multiplayer_map_num = map_num;
+    Serial.printf("Setting game widget num: %d",map_num);
 }

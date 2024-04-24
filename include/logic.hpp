@@ -26,6 +26,11 @@ enum logic_logic_data_state_constants {
     LOGIC_DATA_STATE_WAITING,
 };
 
+enum logic_data_click_constants{
+    LOGIC_DATA_CLICK_LOCAL,
+    LOGIC_DATA_CLICK_PACKET,
+};
+
 /**
  * This struct stores information about each logic_tile:
  * - `x` x position in the grid in coordinates
@@ -40,6 +45,11 @@ struct logic_tile {
     int display;
 };
 
+
+
+struct gui_game_widget;
+struct wifi_data;
+
 /**
  * This struct stores all data that is needed to create a game:
  * - `grid` 2d array of tiles
@@ -53,9 +63,6 @@ struct logic_tile {
  * - `end_data_packet` end_game_data from packet
  * - `end_data_local` local end_game_data
  */
-
-struct gui_game_widget;
-struct wifi_data;
 struct logic_data {
     gui_game_widget* master;
     logic_tile **grid;
@@ -117,7 +124,7 @@ void logic_generate_neighbours(logic_data *game_data);
  * @param y x position in the grid in coordinates
  * @param game_data logic_data struct
  */
-void logic_click_tile_main(int x, int y, logic_data *game_data);
+void logic_click_tile_main(int x, int y, logic_data *game_data, int local);
 
 /**
  * @brief Function that handles click if zero logic_tile is clicked

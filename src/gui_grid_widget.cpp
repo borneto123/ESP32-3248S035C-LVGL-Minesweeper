@@ -87,7 +87,11 @@ void gui_matrix_callback(lv_event_t* e) {
         if (id <= cbData->game_data->cols * cbData->game_data->rows) {
             int cols = cbData->game_data->cols;
             cords c = help_convert_id_to_cordinates(id, cols);
-            logic_click_tile_main(c.x, c.y, cbData->game_data);
+            Serial.println("\nShort");
+            logic_click_tile_main(c.x, c.y, cbData->game_data, LOGIC_DATA_CLICK_LOCAL);
+            Serial.printf("Game state: %d",cbData->game_data->state);
+            if(cbData->game_data->master->multiplayer_map_num == 1 && cbData->game_data->state == LOGIC_DATA_STATE_ON_GOING)
+                wifi_send_click_short(c);
             gui_refresh_grid_widget_display_values(cbData);
             
         }
@@ -172,9 +176,11 @@ void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data) {
         }
         j_data++;
     }
+    Serial.println("Refreshed");
 }
 
 void gui_grid_widget_delete(gui_grid_widget* grid){
+    if(lv_obj_is_valid(grid->div))
     lv_obj_del(grid->div);
     delete grid->display_values;
 }

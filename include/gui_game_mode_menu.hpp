@@ -10,14 +10,15 @@ struct gui_menu;
  * - `div` pointer to parent of all elements
  * - `header` label that will be displayed at the top of the screen
  * - `singleplayer_button` button that starts singleplayer
- * - `multiplayer_button` button that starts multiplayer
+ * - `multiplayer2_button` button that starts multiplayer
  * - `difficulty_menu` pointer to gui_menu
  */
 struct gui_game_mode_menu{
     lv_obj_t* div;
     lv_obj_t* header;
     lv_obj_t* singleplayer_button;
-    lv_obj_t* multiplayer_button;
+    lv_obj_t* multiplayer1_button;
+    lv_obj_t* multiplayer2_button;
     gui_menu* difficulty_menu;
 };
 
@@ -61,12 +62,25 @@ void gui_game_mode_menu_create_singleplayer_button(
  * @param color_text text color
  * @param color_bg background color
  */
-void gui_game_mode_menu_create_multiplayer_button(
+void gui_game_mode_menu_create_multiplayer2_button(
     gui_game_mode_menu* mode_menu,
     lv_obj_t* parent,
     lv_color_t color_text,
     lv_color_t color_bg
 );
+
+
+
+
+void gui_game_mode_menu_create_multiplayer1_button(
+    gui_game_mode_menu* mode_menu,
+    lv_obj_t* parent,
+    lv_color_t color_text,
+    lv_color_t color_bg
+);
+
+void gui_game_mode_menu_multiplayer1_button_cb(lv_event_t* e);
+
 
 /**
  * @brief Function that creates text at the top of the screen
@@ -85,7 +99,7 @@ void gui_game_mode_menu_singleplayer_button_cb(lv_event_t* e);
  * @brief Callback function for the Multiplayer button
  * @param e lv_event_t*
  */
-void gui_game_mode_menu_multiplayer_button_cb(lv_event_t* e);
+void gui_game_mode_menu_multiplayer2_button_cb(lv_event_t* e);
 
 /**
  * @brief Function that makes game mode menu visible

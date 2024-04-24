@@ -44,7 +44,10 @@ void gui_game_difficulty_button_cb(lv_event_t * e){
         if(difficulty->online_mode == 1 && wifi_device_type() == WIFI_DEVICE_MASTER){
             difficulty->settings->seed = millis();
             wifi_send_difficulty(*difficulty->settings);
-            gui_game_widget_multiplayer(difficulty->master);
+            Serial.printf("\nPre Send map type: %d", difficulty->multiplayer_map_num);
+            gui_game_widget_multiplayer(difficulty->master, difficulty->multiplayer_map_num);
+            Serial.printf("\nSend map type: %d", difficulty->multiplayer_map_num);
+            
         }
         else if(difficulty->online_mode == 0){
             gui_game_widget_singleplayer(difficulty->master);
@@ -67,7 +70,9 @@ void gui_game_difficulty_button_hide(gui_game_difficulty_button* difficulty){
 
 void gui_game_difficulty_singleplayer(gui_game_difficulty_button* difficulty){
     difficulty->online_mode = 0;
+    difficulty->multiplayer_map_num = 0;  
 }
-void gui_game_difficulty_multiplayer(gui_game_difficulty_button* difficulty){
+void gui_game_difficulty_multiplayer(gui_game_difficulty_button* difficulty, int map_num){
     difficulty->online_mode = 1;
+    difficulty->multiplayer_map_num = map_num;  
 }

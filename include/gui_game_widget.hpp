@@ -21,6 +21,7 @@ struct gui_mine_counter_widget;
  * - `result` lv object that displays the result of the game(gui_end_game_widget)
  * - `started` used to see if structs are created
  * - `online_mode` `0` Singleplayer `1` Multiplayer
+ * - `multiplayer_map_num` used to determine the type of multiplayer
  */
 struct gui_game_widget{
     lv_obj_t* div;
@@ -32,6 +33,7 @@ struct gui_game_widget{
     lv_obj_t* result;
     bool started = false;
     int online_mode;
+    int multiplayer_map_num;
 };
 
 /**
@@ -90,5 +92,5 @@ void gui_game_widget_singleplayer(gui_game_widget* master);
  * @brief Function that sets the online_mode to 1
  * @param master pointer to gui_game_widget
  */
-void gui_game_widget_multiplayer(gui_game_widget* master);
+void gui_game_widget_multiplayer(gui_game_widget* master, int map_num);
 #endif

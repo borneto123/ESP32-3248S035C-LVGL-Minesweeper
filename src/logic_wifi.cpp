@@ -84,6 +84,10 @@ void wifi_handle_new_data(){
         Serial.println("Primljen finale result");
         logic_data_handle_slave_receive_final(device);
     }
+    if(device.receive.type == WIFI_PACKET_SHORT_CLICK){
+        Serial.println("Primljen short click");
+        logic_click_tile_main(device.receive.c.x, device.receive.c.y, device.menu->master->master_grid_data,LOGIC_DATA_CLICK_PACKET);
+    }
   }
 }
 
@@ -127,4 +131,11 @@ void wifi_send_result_finale(logic_end_game_data logic_end_game_data){
       device.send.end_game_data = logic_end_game_data;
       device.send.end_game_data.type = WIFI_PACKET_FINALE_RESULT;
       wifi_send_data();
+}
+
+void wifi_send_click_short(cords cords){
+  Serial.println("Saljem click");
+  device.send.type = WIFI_PACKET_SHORT_CLICK;
+  device.send.c = cords;
+  wifi_send_data();
 }

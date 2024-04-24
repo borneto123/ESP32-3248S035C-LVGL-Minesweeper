@@ -61,5 +61,6 @@ void gui_timer_widget_style_init(lv_obj_t* timer){
 
 
 void gui_timer_widget_delete(gui_timer_widget* timer){
+    if(lv_obj_is_valid(timer->div))
     lv_obj_del(timer->div);
 }
