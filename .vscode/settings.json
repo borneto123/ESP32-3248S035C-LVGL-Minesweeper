@@ -86,6 +86,41 @@
             "language": "cpp",
             "scheme": "file",
             "pattern": "src/gui_game_difficulty_button.cpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/gui_game_mode_menu.hpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/gui_game_widget.hpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/gui_grid_widget.hpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/gui_menu.hpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/gui_mine_counter_widget.hpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/logic.hpp"
+        },
+        {
+            "language": "cpp",
+            "scheme": "file",
+            "pattern": "include/logic_wifi.hpp"
         }
     ]
 }

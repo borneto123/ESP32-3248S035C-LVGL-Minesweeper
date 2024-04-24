@@ -3,7 +3,6 @@
 void gui_mine_counter_widget_create(gui_mine_counter_widget* counter, logic_data* game_data, lv_obj_t* parent){
     gui_mine_counter_widget_create_div(counter, parent);
     gui_mine_counter_widget_create_label(counter, counter->div);
-    
 }
 
 
@@ -39,6 +38,7 @@ void gui_mine_counter_style_init(lv_obj_t* counter){
     lv_style_set_width(&style, GUI_MINE_COUNTER_WIDGET_WIDTH);
     lv_style_set_height(&style, GUI_MINE_COUNTER_HEIGHT);
     }
+    
     lv_obj_add_style(counter, &style, 0);
     created = 1;
 }

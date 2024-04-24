@@ -11,12 +11,12 @@ enum gui_grid_widget_constants{
 };
 
 /**
- * This struct stores information about widget that has all minesweeper logic:
+ * This struct stores information about a widget that has all minesweeper logic:
  * - `div` pointer to button matrix parent
  * - `matrix` pointer to button matrix lv object
  * - `display_values` 2d array that has all display values
- * - `rows` number of rows in grid
- * - `cols` number of columns in grid
+ * - `rows` number of rows in the grid
+ * - `cols` number of columns in the grid
  */
 struct gui_grid_widget{
     lv_obj_t* div;
@@ -27,7 +27,7 @@ struct gui_grid_widget{
 };
 
 /**
- *   This struct stores wraps gui_grid_widget and logic_data struct so they can be transpored to
+ *   This struct wraps the gui_grid_widget and logic_data struct so they can be transported to
  *   data matrix callback
  * - `grid` pointer to gui_grid_widget struct
  * - `game_data` pointer to logic_data struct
@@ -35,7 +35,7 @@ struct gui_grid_widget{
  */
 struct gui_data_matrix_callback{
     gui_grid_widget* grid;
-     logic_data* game_data;
+    logic_data* game_data;
 };
 
 /**
@@ -43,7 +43,7 @@ struct gui_data_matrix_callback{
  * 
  * @param grid gui_grid_widget* struct
  * @param game_data logic_data* struct
- * @param parent pointer to parent of grid widget
+ * @param parent pointer to the parent of the grid widget
  */
 void gui_grid_widget_create(gui_grid_widget* grid, logic_data* game_data,lv_obj_t* parent);
 
@@ -52,7 +52,7 @@ void gui_grid_widget_create(gui_grid_widget* grid, logic_data* game_data,lv_obj_
  * @brief Function that creates a parent of button matrix
  * 
  * @param grid gui_grid_widget*
- * @param parent pointer to parent of grid widget
+ * @param parent pointer to the parent of the grid widget
  * @param width width of div
  * @param height height of div
  */
@@ -62,7 +62,7 @@ void gui_create_grid_widget_div(gui_grid_widget* grid,lv_obj_t* parent, int widt
  * @brief Function that creates values that will be put on matrix buttons
  * 
  * @param grid gui_grid_widget* 
- * @param rows number of rows in grid
+ * @param rows number of rows in the grid
  * @param cols number of columns in grid
  */
 void gui_create_grid_widget_display_values(gui_grid_widget* grid, int rows, int cols);
@@ -71,27 +71,27 @@ void gui_create_grid_widget_display_values(gui_grid_widget* grid, int rows, int 
  * @brief Function that creates button matrix in gui_grid_widget
  * 
  * @param grid gui_grid_widget*
- * @param rows number of rows in grid
+ * @param rows number of rows in the grid
  * @param cols number of columns in grid
  * @param game_data logic_data* 
  */
 void gui_create_grid_widget_matrix(gui_grid_widget* grid, int rows, int cols,logic_data* game_data);
 
 /**
- * @brief function that refreshes dislay_values on button matrix
+ * @brief Function that refreshes dislay_values on button matrix
  * 
  * @param cb_data gui_data_matrix_callback*
  */
 void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data);
 
-
 /**
- * @brief Function that is used as callback to handle events for button matrix
+ * @brief Callback function that is used to handle button matrix events
  * 
- * @param e lv_event_t *
+ * @param e lv_event_t*
  */
 void gui_matrix_callback (lv_event_t * e);
-//Maybe turn this into list 
+
+//Struct with color for button matrix and its elements
 struct style_colors{
     lv_color_t BACKGROUND_CLICKED = lv_color_make(230, 230, 230);
     lv_color_t LABEL_1 = lv_color_make(0, 0, 255);
@@ -102,10 +102,13 @@ struct style_colors{
     lv_color_t LABEL_6 = lv_color_make(0, 128, 128);
     lv_color_t LABEL_7 = lv_color_make(0, 0, 0);
     lv_color_t LABEL_8 = lv_color_make(128, 128, 128);
+    lv_color_t FLAG = lv_color_make(241, 44, 30);
 };
 
+/**
+ * @brief Function that deletes gui_grid_widget and frees memory
+ * @param grid 
+ */
 void gui_grid_widget_delete(gui_grid_widget* grid);
-
-
 
 #endif

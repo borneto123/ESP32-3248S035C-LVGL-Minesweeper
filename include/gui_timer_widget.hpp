@@ -16,7 +16,7 @@ enum gui_timer_widget_constant{
  * - `label` pointer to label
  * - `current_time` time passed ind milliseconds
  * - `last_time` time when timer was last refreshed
- * - `state` time passed ind milliseconds
+ * - `state` determines if timer is running
  */
 struct gui_timer_widget{
     lv_obj_t* div;
@@ -24,7 +24,6 @@ struct gui_timer_widget{
     unsigned long int current_time;
     unsigned long int last_time;
     bool state;
-
 };
 
 /**
@@ -72,15 +71,16 @@ void gui_timer_widget_stop(gui_timer_widget* timer);
  */
 void gui_timer_widget_refresh(gui_timer_widget* timer);
 
-
-
 /**
  * @brief Fucntion that initializes styles for timer widget 
  * 
  */
 void gui_timer_widget_style_init(lv_obj_t* timer);
 
-
+/**
+ * @brief Function that deletes timer_widget and frees memory
+ * @param timer pointer to gui_timer_widget
+ */
 void gui_timer_widget_delete(gui_timer_widget* timer);
 
 #endif

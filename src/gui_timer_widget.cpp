@@ -43,6 +43,7 @@ void gui_timer_widget_refresh(gui_timer_widget* timer){
 void gui_timer_widget_style_init(lv_obj_t* timer){
     static lv_style_t style;
     static int created = 0;
+
     if(!created){
     lv_style_init(&style);    
     lv_style_set_align(&style,LV_ALIGN_TOP_RIGHT);
@@ -53,6 +54,7 @@ void gui_timer_widget_style_init(lv_obj_t* timer){
     lv_style_set_width(&style, GUI_TIMER_WIDGET_WIDTH);
     lv_style_set_height(&style, GUI_TIMER_WIDGET_HEIGHT);
     }
+    
     lv_obj_add_style(timer, &style, 0);
     created = 1;
 }

@@ -10,7 +10,6 @@ String mac_str[2] = {"B8:D6:1A:81:C4:40", "C0:49:EF:11:EB:08"};
 
 wifi_data device;
 
-
 void wifi_mode_smart(){
     if(WiFi.getMode() != WIFI_MODE_STA)
         WiFi.mode(WIFI_MODE_STA);

@@ -7,7 +7,7 @@
 #include <gui_game_widget.hpp>
 #include <logic_game_difficulty.hpp>
 #include <gui_game_difficulty_button.hpp>
-#include <gui_menue.hpp>
+#include <gui_menu.hpp>
 #include <logic_wifi.hpp>
 #include <gui_game_mode_menu.hpp>
 gui_menu testMenue;

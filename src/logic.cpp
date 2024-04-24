@@ -43,6 +43,7 @@ void logic_create_logic_data(logic_data* game_data, int rows, int cols, int mine
     game_data->mines_remaining = mines_total;
     game_data->hidden_tiles = rows * cols - mines_total;
     game_data->state = LOGIC_DATA_STATE_NOT_GENERATED;
+
     logic_generate_level(game_data);
 }
 
@@ -64,9 +65,9 @@ void logic_generate_bomb(logic_data *game_data) {
     do {
         x = random(0, game_data->rows);
         y = random(0, game_data->cols);
-       // Serial.printf("\nMine false x:%d, y:%d, value:%d",x,y,game_data->grid[x][y].value);
+       
     } while (!(game_data->grid[x][y].value == TILE_VALUE_NOT_GENERATED && game_data->grid[x][y].value != TILE_VALUE_BOMB));
-    //Serial.printf("\nMine true x:%d, y:%d, value:%d",x,y,game_data->grid[x][y].value);
+    
     game_data->grid[x][y].value = TILE_VALUE_BOMB;
 }
 // Array that makes finding neighbours easier
@@ -105,10 +106,10 @@ void logic_click_tile_main(int x, int y, logic_data *game_data) {
             logic_click_non_zero_tile(x, y, game_data);
         }
     }
-    debug_print_grid_display(*game_data);
-    Serial.println("\n-------------------");
-    debug_print_grid_value(*game_data);
-    test_hidden_tiles(*game_data);
+    // debug_print_grid_display(*game_data);
+    // Serial.println("\n-------------------");
+    // debug_print_grid_value(*game_data);
+    // test_hidden_tiles(*game_data);
     if(game_data->hidden_tiles == 0){
         game_data->state = LOGIC_DATA_STATE_WON;
         logic_data_handle_end_screen(game_data);
@@ -127,40 +128,37 @@ void logic_click_bomb_tile(int x, int y, logic_data *game_data) {
 void logic_data_handle_end_screen(logic_data *game_data){
     
     
-    Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(game_data));
-    Serial.printf("\nLocal packet type %d", game_data->end_data_local.type);
+    // Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(game_data));
+    // Serial.printf("\nLocal packet type %d", game_data->end_data_local.type);
     if(game_data->end_data_local.type != WIFI_PACKET_FINALE_RESULT){
-    game_data->end_data_local.score = logic_data_calculate_score(game_data);
-    gui_timer_widget_stop(game_data->master->master_timer);
-    game_data->end_data_local.time = game_data->master->master_timer->current_time;
-    Serial.printf("\nOnline mode: %d\n",game_data->master->online_mode);
-    Serial.printf("\nGame state %d",game_data->end_data_local.state);
+        game_data->end_data_local.score = logic_data_calculate_score(game_data);
+        gui_timer_widget_stop(game_data->master->master_timer);
+        game_data->end_data_local.time = game_data->master->master_timer->current_time;
+    // Serial.printf("\nOnline mode: %d\n",game_data->master->online_mode);
+    // Serial.printf("\nGame state %d",game_data->end_data_local.state);
     }
     if(game_data->master->online_mode == 0){
-    game_data->end_data_local.state = game_data->state;
+        
     
     gui_end_screen_widget_create(game_data->master, game_data->end_data_local);
     return;
     }
     if(game_data->master->online_mode == 1){
         if(game_data->end_data_packet.state != LOGIC_DATA_STATE_END && game_data->end_data_local.type != WIFI_PACKET_FINALE_RESULT)
-        game_data->end_data_local.state = LOGIC_DATA_STATE_WAITING;
+            game_data->end_data_local.state = LOGIC_DATA_STATE_WAITING;
         if(wifi_device_type() == WIFI_DEVICE_SLAVE){
             wifi_send_result_slave(game_data->end_data_local);
         }
         if(wifi_device_type() == WIFI_DEVICE_MASTER){
 
             if(game_data->end_data_packet.state == LOGIC_DATA_STATE_WAITING){
-                
                 if(logic_data_can_generate_result_packet(game_data))
-                wifi_send_result_finale(logic_data_generate_result_packet(game_data));
+                    wifi_send_result_finale(logic_data_generate_result_packet(game_data));
             }
         }
     }
    
-    Serial.println("Deleted");
     gui_end_screen_widget_create(game_data->master, game_data->end_data_local);
-    Serial.println("Spawned");
 }
 
 
@@ -250,17 +248,12 @@ int logic_data_calculate_score(logic_data *game_data){
 
 
 void logic_data_master_send_final(wifi_data device){
-    Serial.println("Test");
     device.menu->master->master_grid_data->end_data_packet = device.receive.end_game_data;
-    Serial.printf("Can generate: %d",logic_data_can_generate_result_packet(device.menu->master->master_grid_data));
     if(logic_data_can_generate_result_packet(device.menu->master->master_grid_data))
     wifi_send_result_finale(logic_data_generate_result_packet(device.menu->master->master_grid_data)); // CHECK THIS LATER
 }
 
 bool logic_data_can_generate_result_packet(logic_data *game_data){
-    Serial.printf("Packet: %d", game_data->end_data_packet.state);
-    Serial.printf("Local: %d", game_data->end_data_local.state);
-
     return game_data->end_data_packet.state == LOGIC_DATA_STATE_WAITING &&
             game_data->end_data_local.state == LOGIC_DATA_STATE_WAITING;
 }
@@ -306,14 +299,9 @@ logic_end_game_data logic_data_generate_result_packet(logic_data *game_data){
 
 
 void logic_data_handle_slave_receive_final(wifi_data device){
-    Serial.printf("\nHandle: ");
-
-    Serial.printf("\nState: %d ",device.receive.end_game_data.state);
-    Serial.printf("\nScore: %d ",device.receive.end_game_data.score);
-    Serial.printf("\nTime: %d \n",device.receive.end_game_data.time);
 
     device.menu->master->master_grid_data->end_data_local = device.receive.end_game_data;
     logic_data_handle_end_screen(device.menu->master->master_grid_data);
 }
 
-// Add function for slave to recive data and call function to spawn end screen
+

@@ -2,7 +2,7 @@
 #define _END_
 #include <lvgl.h>
 #include <logic_end_game_data.hpp>
-#include <gui_menue.hpp>
+#include <gui_menu.hpp>
 
 /**
  * @brief Function that creates an end screen with the result
