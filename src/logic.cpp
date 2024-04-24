@@ -138,8 +138,7 @@ void logic_data_handle_end_screen(logic_data *game_data){
     // Serial.printf("\nGame state %d",game_data->end_data_local.state);
     }
     if(game_data->master->online_mode == 0){
-        
-    
+    game_data->end_data_local.state = game_data->state;
     gui_end_screen_widget_create(game_data->master, game_data->end_data_local);
     return;
     }
