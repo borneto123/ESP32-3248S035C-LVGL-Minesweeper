@@ -180,7 +180,7 @@ void gui_refresh_grid_widget_display_values(gui_data_matrix_callback* cb_data) {
 }
 
 void gui_grid_widget_delete(gui_grid_widget* grid){
-    if(lv_obj_is_valid(grid->div))
+    //if(lv_obj_is_valid(grid->div))
     lv_obj_del(grid->div);
     delete grid->display_values;
 }

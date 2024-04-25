@@ -44,6 +44,6 @@ void gui_mine_counter_style_init(lv_obj_t* counter){
 }
 
 void gui_mine_counter_widget_delete(gui_mine_counter_widget* counter){
-    if(lv_obj_is_valid(counter->div))
+    //if(lv_obj_is_valid(counter->div))
     lv_obj_del(counter->div);
 }

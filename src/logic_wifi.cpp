@@ -139,3 +139,21 @@ void wifi_send_click_short(cords cords){
   device.send.c = cords;
   wifi_send_data();
 }
+
+//handle this
+void wifi_send_mp1_result_slave(){
+  device.send.type = WIFI_PACKET_MP1_SALVE_END;
+  device.send.end_game_data.type = WIFI_PACKET_MP1_SALVE_END;
+  wifi_send_data();
+}
+
+//handle this
+void wifi_send_mp1_result_finale(logic_end_game_data logic_end_game_data){
+  device.send.type = WIFI_PACKET_MP1_FINAL_RESULT;
+  device.send.end_game_data.type = WIFI_PACKET_MP1_FINAL_RESULT;
+  device.send.end_game_data.score = logic_end_game_data.score;
+  device.send.end_game_data.packet_score = logic_end_game_data.score;
+}
+
+//Make end_game_handle
+//Make new end screen text

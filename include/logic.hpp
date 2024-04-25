@@ -133,7 +133,7 @@ void logic_click_tile_main(int x, int y, logic_data *game_data, int local);
  * @param y x position in the grid in coordinates
  * @param game_data logic_data struct
  */
-void logic_click_zero_tile(int x, int y, logic_data *game_data);
+void logic_click_zero_tile(int x, int y, logic_data *game_data, int local);
 
 /**
  * @brief Function that handles click if non-zero logic_tile is clicked

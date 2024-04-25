@@ -54,7 +54,7 @@ void gui_game_widget_delete(gui_game_widget* master){
     delete master->master_grid_data;
     Serial.println(9);
     
-    if(lv_obj_is_valid(master->div))
+    //if(lv_obj_is_valid(master->div))
         lv_obj_del(master->div);
     Serial.println(10);
     master->started = false;
@@ -70,15 +70,18 @@ void gui_game_widget_create_button(
     lv_label_set_text(label, LV_SYMBOL_CLOSE);
     lv_obj_align(master->back_button, LV_ALIGN_TOP_MID,0,0);
     lv_obj_set_style_bg_color(master->back_button, lv_color_make(196, 40, 35), 0);
-    lv_obj_add_event_cb(master->back_button, gui_game_widget_button_cb, LV_EVENT_ALL, master);
+    lv_obj_add_event_cb(master->back_button, gui_game_widget_button_cb, LV_EVENT_CLICKED, master);
 
 }
 
 void gui_game_widget_button_cb(lv_event_t* e) {
+    
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t* obj = lv_event_get_target(e);
     gui_game_widget* master = (gui_game_widget*)lv_event_get_user_data(e);
+    
     if (code == LV_EVENT_CLICKED) {
+        Serial.println("\nX button clicked");
         gui_game_widget_delete(master);
     }
 }

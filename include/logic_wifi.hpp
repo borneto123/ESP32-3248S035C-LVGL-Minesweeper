@@ -22,6 +22,8 @@ enum wifi_packet_type{
     WIFI_PACKET_SLAVE_END,
     WIFI_PACKET_FINALE_RESULT,
     WIFI_PACKET_SHORT_CLICK,
+    WIFI_PACKET_MP1_SALVE_END,
+    WIFI_PACKET_MP1_FINAL_RESULT,
 };
 // Mac addresses of devices
 extern uint8_t mac[2][6];
@@ -126,4 +128,9 @@ void wifi_send_result_finale(logic_end_game_data logic_end_game_data);
 
 
 void wifi_send_click_short(cords cords);
+
+void wifi_send_mp1_result_slave();
+
+void wifi_send_mp1_result_finale(logic_end_game_data logic_end_game_data);
+
 #endif 

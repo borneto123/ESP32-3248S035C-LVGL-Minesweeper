@@ -104,9 +104,9 @@ void logic_click_tile_main(int x, int y, logic_data *game_data, int local) {
     Serial.printf("\nOnline mode: %d",game_data->master->online_mode);
 
     if(game_data->state != LOGIC_DATA_STATE_LOST && game_data->state!=LOGIC_DATA_STATE_WON){
-        if (game_data->grid[x][y].display != TILE_DISPLAY_FLAGGED && game_data->grid[x][y].display != TILE_DISPLAY_SHOWN) {
+        if ((game_data->grid[x][y].display != TILE_DISPLAY_FLAGGED || local == LOGIC_DATA_CLICK_PACKET) && game_data->grid[x][y].display != TILE_DISPLAY_SHOWN) {
         if (game_data->grid[x][y].value == 0) {
-            logic_click_zero_tile(x, y, game_data);
+            logic_click_zero_tile(x, y, game_data, local);
         } 
         else if (game_data->grid[x][y].value == TILE_VALUE_BOMB) {
             if(local == LOGIC_DATA_CLICK_LOCAL)
@@ -224,7 +224,7 @@ void logic_mines_remaining_decrement(logic_data *game_data){
     game_data->mines_remaining--;
 }
 
-void logic_click_zero_tile(int x, int y, logic_data *game_data) {
+void logic_click_zero_tile(int x, int y, logic_data *game_data, int local) {
     queue<logic_tile*> flood;
     game_data->grid[x][y].display = TILE_DISPLAY_SHOWN;
     game_data->hidden_tiles--;
@@ -241,7 +241,7 @@ void logic_click_zero_tile(int x, int y, logic_data *game_data) {
             if (x >= 0 && x < game_data->rows && y >= 0 &&
                 y < game_data->cols) {
                 if (game_data->grid[x][y].value == 0 &&
-                    game_data->grid[x][y].display == TILE_DISPLAY_HIDDEN) {
+                    (game_data->grid[x][y].display == TILE_DISPLAY_HIDDEN ||(local == LOGIC_DATA_CLICK_PACKET && game_data->grid[x][y].display ==TILE_DISPLAY_FLAGGED))) {
                     flood.push(&game_data->grid[x][y]);
                     game_data->grid[x][y].display = TILE_DISPLAY_SHOWN;
                     game_data->hidden_tiles--;
@@ -252,7 +252,7 @@ void logic_click_zero_tile(int x, int y, logic_data *game_data) {
                     int x = grid->x + neighbor[k][0];
                     int y = grid->y + neighbor[k][1];
                     if (x >= 0 && x < game_data->rows && y >= 0 && y < game_data->cols) {
-                        if (game_data->grid[x][y].value != 0 && game_data->grid[x][y].display == TILE_DISPLAY_HIDDEN) {
+                        if (game_data->grid[x][y].value != 0 && (game_data->grid[x][y].display == TILE_DISPLAY_HIDDEN ||(local == LOGIC_DATA_CLICK_PACKET && game_data->grid[x][y].display == TILE_DISPLAY_FLAGGED))) {
                             game_data->grid[x][y].display = TILE_DISPLAY_SHOWN;
                             game_data->hidden_tiles--;
                         }

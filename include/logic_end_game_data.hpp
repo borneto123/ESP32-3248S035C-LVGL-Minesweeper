@@ -13,6 +13,7 @@ struct logic_end_game_data{
     int state; 
     unsigned long int time;
     int score;
+    int packet_score;
 };
 
 
