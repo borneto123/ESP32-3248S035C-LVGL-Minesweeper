@@ -9,7 +9,7 @@
  * @param master pointer to game_widget
  * @param end_game_data result of the game
  */
-void gui_end_screen_widget_create(gui_game_widget* master, logic_end_game_data end_game_data);
+void gui_end_screen_widget_create(gui_game_widget* master, logic_end_game_data end_game_data, int map_num);
 
 /**
  * @brief Function that sets style of end screen(It is called multiple times to change bg color)

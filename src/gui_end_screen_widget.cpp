@@ -1,7 +1,7 @@
 #include <gui_end_screen_widget.hpp>
 #include <logic.hpp>
 #include <Arduino.h>
-void gui_end_screen_widget_create(gui_game_widget* master, logic_end_game_data end_game_data){
+void gui_end_screen_widget_create(gui_game_widget* master, logic_end_game_data end_game_data, int map_num){
     char header[50];
     char message[90];
     if(end_game_data.state == LOGIC_DATA_STATE_LOST){
@@ -18,7 +18,8 @@ void gui_end_screen_widget_create(gui_game_widget* master, logic_end_game_data e
     }
     else{
         sprintf(header, "ERROR");
-    } 
+    }
+    if(map_num !=1) {
      sprintf(
             message,
             "Score: %d\nTime:%02lu:%02lu",
@@ -26,6 +27,13 @@ void gui_end_screen_widget_create(gui_game_widget* master, logic_end_game_data e
             (end_game_data.time/1000)/60,
             (end_game_data.time/1000)%60
             );
+    }
+    else if(map_num == 1 && end_game_data.state == LOGIC_DATA_STATE_WAITING){
+        sprintf(message, "Your score:%d",end_game_data.score);
+    }
+    else{
+        sprintf(message, "Your score:%d\nRival score:%d",end_game_data.score, end_game_data.packet_score);
+    }
 
     if(!lv_obj_is_valid(master->result)){
         master->result = lv_label_create(master->div);

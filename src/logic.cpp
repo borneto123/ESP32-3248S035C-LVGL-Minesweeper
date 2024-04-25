@@ -37,7 +37,7 @@ void logic_create_logic_data(logic_data* game_data, int rows, int cols, int mine
     game_data->end_data_packet.type = WIFI_PACKET_SLAVE_END;
 
     game_data->end_data_local.score = 0;
-    game_data->end_data_packet.score = 0;
+    game_data->end_data_local.packet_score = 0;
 
 
     game_data->seed = seed;
@@ -103,7 +103,7 @@ void logic_click_tile_main(int x, int y, logic_data *game_data, int local) {
     Serial.printf("\nMap type: %d",game_data->master->multiplayer_map_num);
     Serial.printf("\nOnline mode: %d",game_data->master->online_mode);
 
-    if(game_data->state != LOGIC_DATA_STATE_LOST && game_data->state!=LOGIC_DATA_STATE_WON){
+    if((local == LOGIC_DATA_CLICK_PACKET) || (game_data->state != LOGIC_DATA_STATE_LOST && game_data->state!=LOGIC_DATA_STATE_WON)){
         if ((game_data->grid[x][y].display != TILE_DISPLAY_FLAGGED || local == LOGIC_DATA_CLICK_PACKET) && game_data->grid[x][y].display != TILE_DISPLAY_SHOWN) {
         if (game_data->grid[x][y].value == 0) {
             logic_click_zero_tile(x, y, game_data, local);
@@ -126,11 +126,11 @@ void logic_click_tile_main(int x, int y, logic_data *game_data, int local) {
     Serial.printf("\nStatement: %d",game_data->master->online_mode == 1 && game_data->master->multiplayer_map_num == 1);
     if(game_data->master->online_mode == 1 && game_data->master->multiplayer_map_num == 1){
         Serial.println("\nTrue if");
-        if(local == LOGIC_DATA_CLICK_LOCAL){
+        if(local == LOGIC_DATA_CLICK_LOCAL && game_data->state == LOGIC_DATA_STATE_ON_GOING){
             game_data->end_data_local.score += start_score - end_score;
         }
         else if(local == LOGIC_DATA_CLICK_PACKET){
-            game_data->end_data_packet.score += start_score - end_score;
+            game_data->end_data_local.packet_score += start_score - end_score;
             cbData_logic->game_data = game_data;
             cbData_logic->grid = game_data->master->master_grid;
             gui_refresh_grid_widget_display_values(cbData_logic);
@@ -140,7 +140,7 @@ void logic_click_tile_main(int x, int y, logic_data *game_data, int local) {
 
 
         Serial.printf("Local score: %d", game_data->end_data_local.score);
-        Serial.printf("Packet score: %d", game_data->end_data_packet.score);
+        Serial.printf("Packet score: %d", game_data->end_data_local.packet_score);
     }
 
     if(game_data->hidden_tiles == 0){
@@ -160,15 +160,16 @@ void logic_click_bomb_tile(int x, int y, logic_data *game_data) {
 }
 
 void logic_data_handle_end_screen(logic_data *game_data){
-    if(game_data->master->multiplayer_map_num != 1){
     if(game_data->end_data_local.type != WIFI_PACKET_FINALE_RESULT){
+        if(game_data->master->multiplayer_map_num != 1)
         game_data->end_data_local.score = logic_data_calculate_score(game_data);
+        
         gui_timer_widget_stop(game_data->master->master_timer);
         game_data->end_data_local.time = game_data->master->master_timer->current_time;
     }
     if(game_data->master->online_mode == 0){
     game_data->end_data_local.state = game_data->state;
-    gui_end_screen_widget_create(game_data->master, game_data->end_data_local);
+    gui_end_screen_widget_create(game_data->master, game_data->end_data_local, game_data->master->multiplayer_map_num);
     return;
     }
     if(game_data->master->online_mode == 1){
@@ -185,12 +186,8 @@ void logic_data_handle_end_screen(logic_data *game_data){
             }
         }
     }
-    gui_end_screen_widget_create(game_data->master, game_data->end_data_local);
-    }
-    else if(game_data->master->multiplayer_map_num == 1){
+    gui_end_screen_widget_create(game_data->master, game_data->end_data_local, game_data->master->multiplayer_map_num);
 
-    }
-    else Serial.println("Error in logic_data_handle_end_screen");
 }
 
 
@@ -293,6 +290,11 @@ bool logic_data_can_generate_result_packet(logic_data *game_data){
 logic_end_game_data logic_data_generate_result_packet(logic_data *game_data){
     logic_end_game_data result;
     result = game_data->end_data_packet;
+    if(game_data->master->multiplayer_map_num == 1){
+         result.score = game_data->end_data_local.packet_score;
+         result.packet_score = game_data->end_data_local.score;
+    }
+
     if(logic_data_can_generate_result_packet(game_data)){
         if(game_data->end_data_local.score>game_data->end_data_packet.score){
             //This is data for slave
@@ -304,7 +306,7 @@ logic_end_game_data logic_data_generate_result_packet(logic_data *game_data){
             result.state = LOGIC_DATA_STATE_WON;
             game_data->end_data_local.state = LOGIC_DATA_STATE_LOST;
         }
-        else if(game_data->end_data_local.time<game_data->end_data_packet.time){
+        else if(game_data->master->multiplayer_map_num == 1 && game_data->end_data_local.time<game_data->end_data_packet.time){
             //This is data for slave
             result.state = LOGIC_DATA_STATE_LOST;
             game_data->end_data_local.state = LOGIC_DATA_STATE_WON;
